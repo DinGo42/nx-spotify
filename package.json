@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "devFront": "pnpm nx dev nx-spotify --verbose",
-    "devBack": "pnpm nx serve nx-express-spotify --verbose"
+    "devFront": "pnpm nx dev nx-spotify",
+    "devBack": "pnpm nx serve nx-express-spotify"
   },
   "private": true,
   "dependencies": {
