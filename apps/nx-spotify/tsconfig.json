@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+   
     "jsx": "preserve",
     "allowJs": true,
     "esModuleInterop": true,
@@ -16,7 +17,14 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"]
+    "types": [
+      "jest",
+      "node"
+    ],
+  "paths":{
+      "@spotify/*": ["apps/nx-spotify/src/*"],
+      "@spotify/icons": ["apps/nx-spotify/public/svg"],
+  }
   },
   "include": [
     "**/*.ts",
@@ -25,7 +33,13 @@
     "**/*.jsx",
     "../../apps/nx-spotify/.next/types/**/*.ts",
     "../../dist/apps/nx-spotify/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
+  "exclude": [
+    "node_modules",
+    "jest.config.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }
