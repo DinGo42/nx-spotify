@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
+  "plugins": ["@nx","@typescript-eslint", "prettier", "naming-convention", "unicorn"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -18,7 +18,36 @@
               }
             ]
           }
-        ]
+        ],
+        "react/react-in-jsx-scope": "off",
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": ["objectLiteralProperty"],
+            "format": ["camelCase"]
+          },
+          {
+            "selector": ["enumMember"],
+            "format": ["UPPER_CASE"]
+          },
+          {
+            "selector": ["enum", "typeLike", "interface"],
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "variableLike",
+            "format": ["PascalCase", "camelCase"]
+          }
+        ],
+        "unicorn/filename-case": [
+          "error",
+          {
+            "case": "kebabCase"
+          }
+        ],
+        "new-cap": ["error", { "newIsCap": true, "capIsNew": false }]
       }
     },
     {
@@ -35,8 +64,7 @@
       "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
       "env": {
         "jest": true
-      },
-      "rules": {}
+      }
     }
   ]
 }
