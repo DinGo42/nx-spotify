@@ -5,6 +5,21 @@ import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middlewares";
 import { authRouter } from "./routes";
 
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+// const test = async () =>
+//   await prisma.users.create({
+//     data: {
+//       email: "ivan.nesterenko@ukr.net",
+//       password: "12345",
+//       userName: "Imaizumi",
+//     },
+//   });
+
+// test();
+
 dotenv.config();
 
 const app = express();

@@ -4,10 +4,13 @@
   "license": "MIT",
   "scripts": {
     "devFront": "pnpm nx dev nx-spotify",
-    "devBack": "pnpm nx serve nx-express-spotify"
+    "devBack": "pnpm nx serve nx-express-spotify",
+    "prisma:generate": "pnpx prisma generate --schema=./apps/nx-express-spotify/src/prisma/schema.prisma",
+    "prisma:migrateDev": "pnpx prisma migrate dev --schema=./apps/nx-express-spotify/src/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
+    "@prisma/client": "5.10.2",
     "@radix-ui/react-slider": "^1.1.2",
     "@types/jsonwebtoken": "^9.0.6",
     "argon2": "^0.40.1",

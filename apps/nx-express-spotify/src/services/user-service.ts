@@ -1,6 +1,6 @@
-import bcrypt from "bcrypt";
 import argon2 from "argon2";
 import { tokenService } from "./token-service";
+
 const saltRounds = 42;
 
 const {
@@ -26,7 +26,6 @@ export const userService = () => {
     } catch (err) {
       //...
     }
-    const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
     /// add user to db email unique , hashedPassword, userName
 
