@@ -1,21 +1,25 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { errorMiddleware } from "./middlewares";
+import { authRouter } from "./routes";
 
-import express from 'express';
-import * as path from 'path';
+dotenv.config();
 
 const app = express();
+app.use(errorMiddleware);
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(cors());
+app.use(cookieParser());
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to nx-express-spotify!' });
+app.use("./auth", authRouter);
+app.get("/api", (req, res) => {
+  res.send({ message: "Welcome to nx-express-spotify!" });
 });
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });
-server.on('error', console.error);
+server.on("error", console.error);
