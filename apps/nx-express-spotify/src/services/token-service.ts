@@ -29,19 +29,8 @@ export const tokenService = () => {
       return null;
     }
   };
-
-  const saveToken = (token: string) => {
-    ///save token to cookie
-  };
-
-  const deleteToken = (token: string) => {
-    ///delete this token from cookie
-  };
-
   return {
     generateToken,
-    saveToken,
-    deleteToken,
     validateRefreshToken,
     validateAccessToken,
   };
