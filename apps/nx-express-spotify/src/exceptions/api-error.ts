@@ -1,4 +1,7 @@
-export enum ErrorStatusCodes {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export enum STATUS_CODES {
+  CONFLICT = 409,
+  FORBIDDEN = 403,
   UNAUTHORIZED = 401,
   SERVER_ERROR = 500,
   SUCCESS = 200,
@@ -7,41 +10,61 @@ export enum ErrorStatusCodes {
 }
 
 interface ApiErrorProps extends Error {
-  status: ErrorStatusCodes;
+  statusCode: STATUS_CODES;
 }
 
 export class ApiError extends Error {
-  status: ErrorStatusCodes;
-  constructor({ message, name, status, stack }: ApiErrorProps) {
+  statusCode: STATUS_CODES;
+  errorFields: string[];
+  constructor({ message, name, statusCode: status, stack }: ApiErrorProps) {
     super();
-    this.status = status;
+    this.statusCode = status;
     this.name = name;
     this.message = message;
     this.stack = stack;
   }
   static UnauthorizedError() {
     return new ApiError({
-      status: ErrorStatusCodes.UNAUTHORIZED,
+      statusCode: STATUS_CODES.UNAUTHORIZED,
       message: "User unauthorized",
       name: "unauthorized",
     });
   }
-
-  static BadRequest(message: string, name: string, stack?: string) {
+  static NotFoundError() {
     return new ApiError({
-      status: ErrorStatusCodes.BAD_REQUEST,
-      message,
-      name,
-      stack,
+      statusCode: STATUS_CODES.NOT_FOUND,
+      message: "Not found error",
+      name: "NotFoundError",
+    });
+  }
+  static ServerError() {
+    return new ApiError({
+      statusCode: STATUS_CODES.SERVER_ERROR,
+      message: "Internal server error",
+      name: "InternalServerError",
     });
   }
 
-  static CustomError(
-    status: ErrorStatusCodes,
-    message: string,
-    name: string,
-    stack?: string,
-  ) {
-    return new ApiError({ status, message, name, stack });
+  static ValidationError() {
+    return new ApiError({
+      statusCode: STATUS_CODES.CONFLICT,
+      message: "Data has not passed validation",
+      name: "ValidationError",
+    });
+  }
+  static ForbiddenError() {
+    return new ApiError({
+      statusCode: STATUS_CODES.FORBIDDEN,
+      message: "Forbidden error",
+      name: "ForbiddenError",
+    });
   }
 }
+
+export const {
+  ForbiddenError,
+  NotFoundError,
+  ServerError,
+  UnauthorizedError,
+  ValidationError,
+} = ApiError;
