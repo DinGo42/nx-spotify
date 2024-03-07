@@ -1,15 +1,16 @@
 import argon2 from "argon2";
+import { PrismaClient } from "@prisma/client";
 import { tokenService } from "./token-service";
+import {
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from "../exceptions";
 
-const saltRounds = 42;
+const prisma = new PrismaClient();
 
-const {
-  deleteToken,
-  generateToken,
-  saveToken,
-  validateAccessToken,
-  validateRefreshToken,
-} = tokenService();
+const { generateToken } = tokenService();
 
 export const userService = () => {
   const signup = async ({
@@ -21,18 +22,33 @@ export const userService = () => {
     password: string;
     userName: string;
   }) => {
-    try {
-      const hashedPassword = await argon2.hash(password);
-    } catch (err) {
-      //...
-    }
+    const emailCheck = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        password: true,
+      },
+    });
 
-    /// add user to db email unique , hashedPassword, userName
+    if (emailCheck) throw ForbiddenError();
 
     const tokens = generateToken({
       email,
       userName,
     });
+
+    const hashedPassword = await argon2.hash(password);
+
+    const data = await prisma.users.create({
+      data: {
+        email,
+        password: hashedPassword,
+        userName: userName,
+      },
+    });
+
+    if (!data) throw ValidationError();
 
     return { ...tokens, user: { email, userName } };
   };
@@ -43,16 +59,25 @@ export const userService = () => {
     email: string;
     password: string;
   }) => {
-    try {
-      const hashedPassword = "hashedPAssword"; /// user hashed password form db
-      if (!(await argon2.verify(hashedPassword, password))) "error"; /// error if password didn`t matches
-    } catch (error) {
-      //..
-    }
-  };
-  const logout = async (refreshToken: string) => {
-    deleteToken(refreshToken);
+    const user = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) throw NotFoundError();
+
+    const { password: hashedPassword, ...userDto } = user;
+
+    if (!(await argon2.verify(hashedPassword, password)))
+      throw UnauthorizedError();
+
+    const tokens = generateToken({
+      ...userDto,
+    });
+
+    return { ...tokens, user: userDto };
   };
 
-  return { logout, login, signup };
+  return { login, signup };
 };
