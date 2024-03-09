@@ -5,7 +5,6 @@ import {
   ForbiddenError,
   NotFoundError,
   UnauthorizedError,
-  ValidationError,
 } from "../exceptions";
 
 const prisma = new PrismaClient();
@@ -31,7 +30,8 @@ export const userService = () => {
       },
     });
 
-    if (emailCheck) throw ForbiddenError();
+    if (emailCheck)
+      throw new ForbiddenError(`User with email:${email} already exist`);
 
     const tokens = generateToken({
       email,
@@ -40,15 +40,13 @@ export const userService = () => {
 
     const hashedPassword = await argon2.hash(password);
 
-    const data = await prisma.users.create({
+    await prisma.users.create({
       data: {
         email,
         password: hashedPassword,
         userName: userName,
       },
     });
-
-    if (!data) throw ValidationError();
 
     return { ...tokens, user: { email, userName } };
   };
@@ -65,12 +63,12 @@ export const userService = () => {
       },
     });
 
-    if (!user) throw NotFoundError();
+    if (!user) throw new NotFoundError(`User with email:${email} not found`);
 
     const { password: hashedPassword, ...userDto } = user;
 
     if (!(await argon2.verify(hashedPassword, password)))
-      throw UnauthorizedError();
+      throw new UnauthorizedError(`Password doesn't match`);
 
     const tokens = generateToken({
       ...userDto,
