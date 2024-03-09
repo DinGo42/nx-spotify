@@ -13,58 +13,61 @@ interface ApiErrorProps extends Error {
   statusCode: STATUS_CODES;
 }
 
-export class ApiError extends Error {
+export abstract class ApiError extends Error {
   statusCode: STATUS_CODES;
-  errorFields: string[];
-  constructor({ message, name, statusCode: status, stack }: ApiErrorProps) {
-    super();
-    this.statusCode = status;
+  constructor({ message, statusCode, name }: ApiErrorProps) {
+    super(message);
+    this.statusCode = statusCode;
     this.name = name;
-    this.message = message;
-    this.stack = stack;
   }
-  static UnauthorizedError() {
-    return new ApiError({
-      statusCode: STATUS_CODES.UNAUTHORIZED,
-      message: "User unauthorized",
-      name: "unauthorized",
-    });
-  }
-  static NotFoundError() {
-    return new ApiError({
-      statusCode: STATUS_CODES.NOT_FOUND,
-      message: "Not found error",
-      name: "NotFoundError",
-    });
-  }
-  static ServerError() {
-    return new ApiError({
-      statusCode: STATUS_CODES.SERVER_ERROR,
-      message: "Internal server error",
-      name: "InternalServerError",
-    });
-  }
+}
 
-  static ValidationError() {
-    return new ApiError({
-      statusCode: STATUS_CODES.CONFLICT,
-      message: "Data has not passed validation",
-      name: "ValidationError",
-    });
-  }
-  static ForbiddenError() {
-    return new ApiError({
-      statusCode: STATUS_CODES.FORBIDDEN,
-      message: "Forbidden error",
-      name: "ForbiddenError",
+export class UnauthorizedError extends ApiError {
+  constructor(message: string) {
+    super({
+      message,
+      statusCode: STATUS_CODES.UNAUTHORIZED,
+      name: "Unauthorized",
     });
   }
 }
 
-export const {
-  ForbiddenError,
-  NotFoundError,
-  ServerError,
-  UnauthorizedError,
-  ValidationError,
-} = ApiError;
+export class NotFoundError extends ApiError {
+  constructor(message: string) {
+    super({
+      message,
+      statusCode: STATUS_CODES.NOT_FOUND,
+      name: "NotFoundError",
+    });
+  }
+}
+
+export class ServerError extends ApiError {
+  constructor(message: string) {
+    super({
+      message,
+      statusCode: STATUS_CODES.SERVER_ERROR,
+      name: "InternalServerError",
+    });
+  }
+}
+
+export class ValidationError extends ApiError {
+  constructor(message: string) {
+    super({
+      message,
+      statusCode: STATUS_CODES.CONFLICT,
+      name: "ValidationError",
+    });
+  }
+}
+
+export class ForbiddenError extends ApiError {
+  constructor(message: string) {
+    super({
+      message,
+      statusCode: STATUS_CODES.FORBIDDEN,
+      name: "ForbiddenError",
+    });
+  }
+}
