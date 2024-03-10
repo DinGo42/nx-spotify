@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "devFront": "pnpm nx dev next-frontend",
-    "devAdminFront": "pnpm nx dev admin-next-frontend",
+    "devAdminFront": "pnpm nx dev admin-next-frontend -p 3001",
     "devBack": "pnpm nx serve express-backend",
     "devAdminBack": "pnpm nx serve admin-express-backend",
     "prisma:generate": "pnpx prisma generate --schema=./apps/nx-express-spotify/src/prisma/schema.prisma",

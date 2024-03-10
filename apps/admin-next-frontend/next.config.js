@@ -1,7 +1,7 @@
 //@ts-check
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { composePlugins, withNx } = require('@nx/next');
+const { composePlugins, withNx } = require("@nx/next");
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -24,7 +24,7 @@ module.exports = {
   webpack(nextConfig) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = nextConfig.module.rules.find((rule) =>
-      rule.test?.test?.('.svg'),
+      rule.test?.test?.(".svg"),
     );
 
     nextConfig.module.rules.push(
@@ -39,7 +39,7 @@ module.exports = {
         test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
-        use: ['@svgr/webpack'],
+        use: ["@svgr/webpack"],
       },
     );
 
