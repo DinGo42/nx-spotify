@@ -2,10 +2,10 @@
 import {
   ShuffleIcon,
   NextSongIcon,
-  PlayIcon,
   PauseIcon,
+  PlayIcon,
   RepeatIcon,
-} from "@spotify/icons";
+} from "@shared/svg";
 import { Button, Slider } from "@spotify/shared";
 import { FC, useState } from "react";
 

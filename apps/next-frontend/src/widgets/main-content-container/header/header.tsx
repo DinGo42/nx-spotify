@@ -1,4 +1,4 @@
-import { ArrowIcon, BellIcon, GroupIcon } from "@spotify/icons";
+import { ArrowIcon, BellIcon, GroupIcon } from "@shared/svg";
 import { Button, Image } from "@spotify/shared";
 
 export const Header = () => (

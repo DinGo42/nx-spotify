@@ -1,5 +1,5 @@
 "use client";
-import { MinVolumeIcon, MaxVolumeIcon, MidVolumeIcon } from "@spotify/icons";
+import { MinVolumeIcon, MidVolumeIcon, MaxVolumeIcon } from "@shared/svg";
 import { Button, Slider } from "@spotify/shared";
 import { FC, useState } from "react";
 

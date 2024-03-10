@@ -1,5 +1,5 @@
 "use client";
-import { HeartIcon } from "@spotify/icons";
+import { HeartIcon } from "@shared/svg";
 import {
   Button,
   Link,

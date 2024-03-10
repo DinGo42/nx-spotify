@@ -1,4 +1,4 @@
-import { HomeIcon, LibraryIcon, SearchIcon } from "@spotify/icons";
+import { HomeIcon, SearchIcon, LibraryIcon } from "@shared/svg";
 import { SideBarItem } from "./item";
 
 export const SideBar = () => (

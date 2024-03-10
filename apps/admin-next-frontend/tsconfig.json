@@ -19,7 +19,8 @@
     "types": ["node"],
     "paths": {
       "@spotify/*": ["apps/admin-next-frontend/src/*"],
-      "@spotify/icons": ["apps/admin-next-frontend/public/svg"]
+      "@spotify/icons": ["apps/admin-next-frontend/public/svg"],
+      "@shared/svg": ["packages/shared/assets"]
     }
   },
   "include": [

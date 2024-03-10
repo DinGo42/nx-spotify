@@ -2,7 +2,7 @@
 import { FC, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { cn, Button, Image } from "@spotify/shared";
-import { PlayIcon, PauseIcon } from "@spotify/icons";
+import { PauseIcon, PlayIcon } from "@shared/svg";
 
 export enum RecentlyPlayedTypes {
   USER_PLAYLIST = "grid grid-cols-2",
