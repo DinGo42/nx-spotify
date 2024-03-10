@@ -1,8 +1,0 @@
-{
-  "name": "nx-spotify",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/nx-spotify",
-  "projectType": "application",
-  "targets": {},
-  "tags": []
-}
