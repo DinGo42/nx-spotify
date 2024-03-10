@@ -21,7 +21,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@nx-spotify/prisma": ["packages/shared/prisma/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
