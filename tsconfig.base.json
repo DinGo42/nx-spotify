@@ -20,10 +20,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
-    "paths": {
-      "@nx-spotify/prisma": ["packages/shared/prisma/src/index.ts"]
-    }
+    "incremental": true
   },
   "exclude": ["node_modules", "tmp"]
 }

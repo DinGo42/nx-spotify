@@ -28,7 +28,7 @@ export const MainContentContainer: FC = () => (
     <Header />
     <div className="h-full w-full overflow-y-auto">
       <div className="flex h-[2000px] w-full flex-col gap-7">
-        <span className="text-4xl font-bold">Good afternoon</span>
+        <span className="text-4xl font-bold">Admin Good afternoon</span>
         <div className="flex h-fit w-full flex-wrap gap-5 xl:grid xl:grid-cols-3">
           <RecentlyPlayed
             type={"COMMUNITY_PLAYLIST"}
