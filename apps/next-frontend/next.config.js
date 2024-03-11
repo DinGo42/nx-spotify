@@ -10,8 +10,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/about",
-        destination: "/",
+        source: "/admin/:path*",
+        destination: "http://localhost:3001/:path*",
       },
     ];
   },
