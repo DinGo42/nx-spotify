@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { cn, Image } from "@spotify/shared";
+import { cn, Image } from "@web-shared";
 import { FC } from "react";
 
 export enum SideBarItemTypes {

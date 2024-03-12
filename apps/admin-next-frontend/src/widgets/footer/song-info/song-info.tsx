@@ -1,12 +1,6 @@
 "use client";
-import { HeartIcon } from "@shared/svg";
-import {
-  Button,
-  Link,
-  animations,
-  cn,
-  useOptionalStyle,
-} from "@spotify/shared";
+import { HeartIcon } from "@web-shared";
+import { Button, Link, animations, cn, useOptionalStyle } from "@web-shared";
 import { FC, useState } from "react";
 
 export const SongInfo: FC = () => {

@@ -1,6 +1,6 @@
-import { authContract } from "../contracts";
 import { initServer } from "@ts-rest/express";
 import { authController } from "../controllers";
+import { authContract } from "@shared";
 
 const s = initServer();
 

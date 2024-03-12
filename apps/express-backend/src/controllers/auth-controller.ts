@@ -1,8 +1,11 @@
-import { tokenService, authService } from "../services";
-import { STATUS_CODES } from "../exceptions";
-import { authContract } from "../contracts";
+import { authService } from "../services";
 import { RecursiveRouterObj } from "@ts-rest/express/src/lib/types";
-import { authMiddleware } from "../middlewares";
+import {
+  STATUS_CODES,
+  authContract,
+  authMiddleware,
+  tokenService,
+} from "@shared";
 
 const { login: loginService, signup: signupService } = authService();
 const { deleteTokens, saveTokens } = tokenService();

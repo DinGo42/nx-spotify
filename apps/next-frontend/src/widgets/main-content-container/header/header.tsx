@@ -1,5 +1,5 @@
-import { ArrowIcon, BellIcon, GroupIcon } from "@shared/svg";
-import { Button, Image } from "@spotify/shared";
+import { ArrowIcon, BellIcon, GroupIcon } from "@web-shared";
+import { Button, Image } from "@web-shared";
 
 export const Header = () => (
   <div className="sticky top-0 flex w-full items-center justify-between">

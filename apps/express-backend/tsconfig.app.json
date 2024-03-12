@@ -3,7 +3,11 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["node", "express"]
+    "types": ["node", "express"],
+    "paths": {
+      "@bd": ["packages/bd/src/index.ts"],
+      "@shared": ["packages/shared/src/index.ts"]
+    }
   },
   "include": ["src/**/*.ts", "**/*.d.ts"]
 }

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Header } from "./header";
 import { RecentlyPlayed } from "./recently-played";
-import { Image } from "@spotify/shared";
+import { Image } from "@web-shared";
 
 export const Mixes: FC = () => (
   <div className="flex h-fit w-fit grow flex-col rounded-[10px] bg-[#191919] p-4 transition-colors hover:bg-[#282828]">

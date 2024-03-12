@@ -1,6 +1,6 @@
 "use client";
-import { MaxVolumeIcon, MidVolumeIcon, MinVolumeIcon } from "@shared/svg";
-import { Button, Slider } from "@spotify/shared";
+import { MaxVolumeIcon, MidVolumeIcon, MinVolumeIcon } from "@web-shared";
+import { Button, Slider } from "@web-shared";
 import { FC, useState } from "react";
 
 export const SoundSlider: FC = () => {

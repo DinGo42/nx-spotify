@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./global.css";
-import { AppWrapper } from "@spotify/shared";
+import { AppWrapper } from "@web-shared";
 
 const сairo = Cairo({
   subsets: ["latin"],

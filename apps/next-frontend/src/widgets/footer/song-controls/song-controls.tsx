@@ -5,8 +5,8 @@ import {
   PlayIcon,
   PauseIcon,
   RepeatIcon,
-} from "@shared/svg";
-import { Button, Slider } from "@spotify/shared";
+} from "@web-shared";
+import { Button, Slider } from "@web-shared";
 import { FC, useState } from "react";
 
 export const SongControls: FC = () => {

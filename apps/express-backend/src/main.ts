@@ -2,10 +2,9 @@ import express, { json, urlencoded } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { errorMiddleware } from "./middlewares";
 import { authRouter } from "./routes";
 import { createExpressEndpoints } from "@ts-rest/express";
-import { authContract } from "./contracts";
+import { authContract, errorMiddleware } from "@shared";
 
 dotenv.config();
 

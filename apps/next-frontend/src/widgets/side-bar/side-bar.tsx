@@ -1,4 +1,4 @@
-import { HomeIcon, SearchIcon, LibraryIcon } from "@shared/svg";
+import { HomeIcon, SearchIcon, LibraryIcon } from "@web-shared";
 import { SideBarItem } from "./item";
 
 export const SideBar = () => (

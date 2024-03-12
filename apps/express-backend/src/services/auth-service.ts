@@ -1,11 +1,11 @@
 import argon2 from "argon2";
-import { PrismaClient } from "@prisma/client";
-import { tokenService } from "./token-service";
+import { PrismaClient } from "@bd";
 import {
   ForbiddenError,
   NotFoundError,
   UnauthorizedError,
-} from "../exceptions";
+  tokenService,
+} from "@shared";
 
 const prisma = new PrismaClient();
 

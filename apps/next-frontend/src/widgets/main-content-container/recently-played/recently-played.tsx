@@ -1,8 +1,8 @@
 "use client";
 import { FC, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { cn, Button, Image } from "@spotify/shared";
-import { PauseIcon, PlayIcon } from "@shared/svg";
+import { cn, Button, Image } from "@web-shared";
+import { PauseIcon, PlayIcon } from "@web-shared";
 
 export enum RecentlyPlayedTypes {
   USER_PLAYLIST = "grid grid-cols-2",
