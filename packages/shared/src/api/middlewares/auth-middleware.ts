@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UnauthorizedError } from "../exceptions";
+import { UnauthorizedError } from "../../utils";
 import { tokenService } from "../services";
 
 const { refreshTokens, saveTokens } = tokenService();

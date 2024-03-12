@@ -1,6 +1,7 @@
 import { Errback, NextFunction, Request, Response } from "express";
-import { ApiError, STATUS_CODES, getErrorInfo } from "../exceptions";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@bd";
+import { STATUS_CODES } from "../constants";
+import { ApiError, getErrorInfo } from "../../utils";
 
 export const errorMiddleware = (
   err: Errback,
