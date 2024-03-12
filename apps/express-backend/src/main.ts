@@ -1,22 +1,24 @@
-import express, { json } from "express";
+import express, { json, urlencoded } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middlewares";
 import { authRouter } from "./routes";
+import { createExpressEndpoints } from "@ts-rest/express";
+import { authContract } from "./contracts";
 
 dotenv.config();
 
+const port = process.env.PORT || 3333;
+
 const app = express();
 app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cors());
 app.use(cookieParser());
-
-app.use("/auth", authRouter);
-
+createExpressEndpoints(authContract, authRouter, app);
 app.use(errorMiddleware);
 
-const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });
