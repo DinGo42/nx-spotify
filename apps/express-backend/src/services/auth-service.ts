@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 
 const { generateToken } = tokenService();
 
-export const userService = () => {
+export const authService = () => {
   const signup = async ({
     email,
     password,
