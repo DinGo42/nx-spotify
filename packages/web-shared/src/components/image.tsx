@@ -1,5 +1,4 @@
 import NextImage, { ImageProps as NextImageProps } from "next/image";
-
 import { FC, ReactNode } from "react";
 import { cn } from "../utils";
 
