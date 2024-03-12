@@ -1,14 +1,7 @@
-import { Router } from "express";
-import { userController } from "../controllers";
-import { STATUS_CODES } from "../exceptions";
-import { authMiddleware } from "../middlewares";
+import { authContract } from "../contracts";
+import { initServer } from "@ts-rest/express";
+import { authController } from "../controllers";
 
-const { login, logout, signup } = userController();
-export const authRouter = Router();
+const s = initServer();
 
-authRouter.post("/signup", signup);
-authRouter.post("/login", login);
-authRouter.get("/logout", logout);
-authRouter.get("/users", authMiddleware, (req, res) => {
-  res.status(STATUS_CODES.SUCCESS).json({ message: "Success u authorized" });
-});
+export const authRouter = s.router(authContract, authController);
