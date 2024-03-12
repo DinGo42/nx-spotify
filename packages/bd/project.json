@@ -1,0 +1,8 @@
+{
+  "name": "bd",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/bd/src",
+  "projectType": "library",
+  "targets": {},
+  "tags": []
+}

@@ -20,7 +20,12 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@bd": ["packages/bd/src/index.ts"],
+      "@shared": ["packages/shared/src/index.ts"],
+      "@web-shared": ["packages/web-shared/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -7,8 +7,8 @@
     "devAdminFront": "pnpm nx dev admin-next-frontend -p 3001",
     "devBack": "pnpm nx serve express-backend",
     "devAdminBack": "pnpm nx serve admin-express-backend",
-    "prisma:generate": "pnpx prisma generate --schema=./apps/nx-express-spotify/src/prisma/schema.prisma",
-    "prisma:migrateDev": "pnpx prisma migrate dev --schema=./apps/nx-express-spotify/src/prisma/schema.prisma"
+    "prisma:generate": "pnpx prisma generate --schema=./packages/bd/src/prisma/schema.prisma",
+    "prisma:migrateDev": "pnpx prisma migrate dev --schema=./packages/bd/src/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
