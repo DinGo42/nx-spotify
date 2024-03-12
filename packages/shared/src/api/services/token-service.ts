@@ -1,5 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Response } from "express";
+import { ServerError } from "../../utils";
 
 type TokenServiceProps = {
   accessTokenMaxTime?: number;
@@ -11,6 +12,11 @@ const refreshTokenMaxTime = 2592000000;
 
 export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
   const generateToken = (payload: object | string) => {
+    if (
+      !process.env.JWT_REFRESH_SECRET_KEY ||
+      !process.env.JWT_ACCESS_SECRET_KEY
+    )
+      throw new ServerError("Token secret key is missing");
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET_KEY, {
       expiresIn: tokensMaxTime?.refreshTokenMaxTime || refreshTokenMaxTime,
     });
@@ -22,6 +28,8 @@ export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
   };
 
   const validateRefreshToken = (token: string | null): JwtPayload | null => {
+    if (!process.env.JWT_REFRESH_SECRET_KEY)
+      throw new ServerError("Token secret key is missing");
     if (!token) return null;
     const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET_KEY);
     if (typeof userData === "string") return null;
@@ -29,6 +37,8 @@ export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
   };
 
   const validateAccessToken = (token: string | null) => {
+    if (!process.env.JWT_ACCESS_SECRET_KEY)
+      throw new ServerError("Token secret key is missing");
     if (!token) return null;
     const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET_KEY);
     if (typeof userData === "string") return null;
