@@ -1,12 +1,12 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
+import { UserRoles } from "@bd";
+import { STATUS_CODES } from "../constants";
 import {
   ForbiddenErrorSchema,
   NotFoundErrorSchema,
-  STATUS_CODES,
   UnauthorizedErrorSchema,
-} from "../exceptions";
-import { UserRoles } from "@prisma/client";
+} from "../../utils";
 
 const c = initContract();
 
