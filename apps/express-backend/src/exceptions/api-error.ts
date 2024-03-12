@@ -1,20 +1,52 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export enum STATUS_CODES {
-  CONFLICT = 409,
-  FORBIDDEN = 403,
-  UNAUTHORIZED = 401,
-  SERVER_ERROR = 500,
-  SUCCESS = 200,
-  BAD_REQUEST = 400,
-  NOT_FOUND = 404,
-}
+import z from "zod";
+
+/* eslint-disable @typescript-eslint/naming-convention */
+export const STATUS_CODES = {
+  CONFLICT: 409 as const,
+  FORBIDDEN: 403 as const,
+  UNAUTHORIZED: 401 as const,
+  SERVER_ERROR: 500 as const,
+  SUCCESS: 200 as const,
+  BAD_REQUEST: 400 as const,
+  NOT_FOUND: 404 as const,
+  CREATED: 201 as const,
+} as const;
+
+export type StatusCodes = (typeof STATUS_CODES)[keyof typeof STATUS_CODES];
 
 interface ApiErrorProps extends Error {
-  statusCode: STATUS_CODES;
+  statusCode: StatusCodes;
 }
 
+export const ApiErrorConstructorSchema = <
+  TName extends string,
+  TStatus extends StatusCodes,
+>(
+  code: TStatus,
+  name: TName,
+) =>
+  z.object({
+    message: z.string(),
+    stack: z.string().optional(),
+    name: z.literal(name),
+    statusCode: z.literal(code),
+  });
+
 export abstract class ApiError extends Error {
-  statusCode: STATUS_CODES;
+  statusCode: StatusCodes;
+  abstract zodSchema: ReturnType<typeof ApiErrorConstructorSchema>;
+
+  static createZodSchema<TName extends string, TStatus extends StatusCodes>(
+    code: TStatus,
+    name: TName,
+  ) {
+    return z.object({
+      message: z.string(),
+      stack: z.string().optional(),
+      name: z.literal(name),
+      statusCode: z.literal(code),
+    });
+  }
   constructor({ message, statusCode, name }: ApiErrorProps) {
     super(message);
     this.statusCode = statusCode;
@@ -23,6 +55,11 @@ export abstract class ApiError extends Error {
 }
 
 export class UnauthorizedError extends ApiError {
+  zodSchema = ApiError.createZodSchema(
+    STATUS_CODES.UNAUTHORIZED,
+    "Unauthorized",
+  );
+
   constructor(message: string) {
     super({
       message,
@@ -33,6 +70,7 @@ export class UnauthorizedError extends ApiError {
 }
 
 export class NotFoundError extends ApiError {
+  zodSchema = ApiError.createZodSchema(STATUS_CODES.NOT_FOUND, "NotFoundError");
   constructor(message: string) {
     super({
       message,
@@ -43,6 +81,10 @@ export class NotFoundError extends ApiError {
 }
 
 export class ServerError extends ApiError {
+  zodSchema = ApiError.createZodSchema(
+    STATUS_CODES.SERVER_ERROR,
+    "InternalServerError",
+  );
   constructor(message: string) {
     super({
       message,
@@ -53,6 +95,10 @@ export class ServerError extends ApiError {
 }
 
 export class ValidationError extends ApiError {
+  zodSchema = ApiError.createZodSchema(
+    STATUS_CODES.CONFLICT,
+    "ValidationError",
+  );
   constructor(message: string) {
     super({
       message,
@@ -63,6 +109,10 @@ export class ValidationError extends ApiError {
 }
 
 export class ForbiddenError extends ApiError {
+  zodSchema = ApiError.createZodSchema(
+    STATUS_CODES.FORBIDDEN,
+    "ForbiddenError",
+  );
   constructor(message: string) {
     super({
       message,
@@ -71,3 +121,9 @@ export class ForbiddenError extends ApiError {
     });
   }
 }
+
+export const ForbiddenErrorSchema = new ForbiddenError("").zodSchema;
+export const ValidationErrorSchema = new ValidationError("").zodSchema;
+export const ServerErrorSchema = new ServerError("").zodSchema;
+export const NotFoundErrorSchema = new NotFoundError("").zodSchema;
+export const UnauthorizedErrorSchema = new UnauthorizedError("").zodSchema;
