@@ -13,3 +13,7 @@ export { default as MinVolumeIcon } from "./min-volume.svg";
 export { default as BellIcon } from "./notification-bell.svg";
 export { default as GroupIcon } from "./group.svg";
 export { default as RepeatIcon } from "./repeat.svg";
+export { default as LogoIcon } from "./logo.svg";
+export { default as ShownIcon } from "./shown.svg";
+export { default as UnShownIcon } from "./un-shown.svg";
+export { default as XIcon } from "./x.svg";

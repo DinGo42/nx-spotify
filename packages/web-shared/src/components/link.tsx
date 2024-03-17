@@ -14,18 +14,8 @@ type LinkProps = {
   className?: string;
 } & NextLinkProps;
 
-export const Link: FC<LinkProps> = ({
-  href,
-  styleType,
-  className,
-  children,
-  ...props
-}) => (
-  <NextLink
-    href={href}
-    {...props}
-    className={cn("w-fit", styleType && LinkStyleTypes[styleType], className)}
-  >
+export const Link: FC<LinkProps> = ({ href, styleType, className, children, ...props }) => (
+  <NextLink href={href} {...props} className={cn("h-fit w-fit", styleType && LinkStyleTypes[styleType], className)}>
     {children}
   </NextLink>
 );
