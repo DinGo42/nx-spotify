@@ -18,8 +18,8 @@
     ],
     "types": ["node"],
     "paths": {
-      "@spotify/*": ["apps/admin-next-frontend/src/*"],
-      "@spotify/icons": ["apps/admin-next-frontend/public/svg"],
+      "@/*": ["apps/admin-next-frontend/src/*"],
+      "@/icons": ["apps/admin-next-frontend/public/svg"],
       "@bd": ["packages/bd/src/index.ts"],
       "@shared": ["packages/shared/src/index.ts"],
       "@web-shared": ["packages/web-shared/src/index.ts"]

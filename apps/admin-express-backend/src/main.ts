@@ -21,6 +21,6 @@ createExpressEndpoints(adminContract, adminRouter, app);
 app.use(errorMiddleware);
 
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+  console.log(`Listening at http://localhost:${port}`);
 });
 server.on("error", console.error);

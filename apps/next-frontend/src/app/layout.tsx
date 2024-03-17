@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+
 import { Cairo } from "next/font/google";
 import "./global.css";
-import { AppWrapper } from "@web-shared";
+import { AppWrapper, Toaster } from "@web-shared";
 
 const сairo = Cairo({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={сairo.className}>
         <AppWrapper>{children}</AppWrapper>
+        <Toaster />
       </body>
     </html>
   );

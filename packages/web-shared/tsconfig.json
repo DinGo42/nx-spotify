@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "module": "commonjs"
+    "module": "ES2015"
   },
   "files": [],
   "include": [],

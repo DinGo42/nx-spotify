@@ -2,23 +2,53 @@ import { initContract } from "@ts-rest/core";
 import { z } from "zod";
 import { UserRoles } from "@bd";
 import { STATUS_CODES } from "../constants";
-import {
-  ForbiddenErrorSchema,
-  NotFoundErrorSchema,
-  UnauthorizedErrorSchema,
-} from "../../utils";
+import { ForbiddenErrorSchema, NotFoundErrorSchema, UnauthorizedErrorSchema } from "../../utils";
 
 const c = initContract();
 
-const UserSchema = z.object({
+export const passwordLengthCheck = (password: string) => z.string().min(10).safeParse(password).success;
+
+export const passwordHasLetterCheck = (password: string) =>
+  z
+    .string()
+    .regex(/[a-zA-Z]/)
+    .safeParse(password).success;
+
+export const passwordHasDigitOrSpecialCharCheck = (password: string) =>
+  z
+    .string()
+    .regex(/\d|[#!?&]/)
+    .safeParse(password).success;
+
+export enum PasswordErrorMessages {
+  TO_SHORT = "to_short",
+  LETTER_CHECK = "no_letter_in_password",
+  SPECIAL_CHAR_CHECK = "no_special_char_in_password",
+}
+const passwordSchema = z
+  .string()
+  .regex(/\d|[#!?&]/, PasswordErrorMessages.SPECIAL_CHAR_CHECK)
+  .regex(/[a-zA-Z]/, PasswordErrorMessages.LETTER_CHECK)
+  .min(10, PasswordErrorMessages.TO_SHORT);
+
+export const userSchema = z.object({
   email: z.string().email(),
   userName: z.string(),
-  password: z.string(),
+  password: passwordSchema,
 });
 
-const LoginSchema = UserSchema.omit({
+export const tokensSchema = z.object({
+  refreshToken: z.string(),
+  accessToken: z.string(),
+});
+
+export type UserSchema = z.infer<typeof userSchema>;
+
+export const loginSchema = userSchema.omit({
   userName: true,
 });
+
+export type LoginSchema = z.infer<typeof loginSchema>;
 
 const userDTOSchema = z.object({
   id: z.string(),
@@ -34,13 +64,12 @@ export const authContract = c.router(
       method: "POST",
       path: "/signup",
       responses: {
-        [STATUS_CODES.CREATED]: UserSchema.omit({
+        [STATUS_CODES.SUCCESS]: userSchema.omit({
           password: true,
         }),
         [STATUS_CODES.FORBIDDEN]: ForbiddenErrorSchema,
       },
-
-      body: UserSchema,
+      body: userSchema,
     },
     loginUser: {
       method: "POST",
@@ -50,7 +79,7 @@ export const authContract = c.router(
         [STATUS_CODES.NOT_FOUND]: NotFoundErrorSchema,
         [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
       },
-      body: LoginSchema,
+      body: loginSchema,
     },
     logoutUser: {
       method: "GET",
@@ -63,11 +92,12 @@ export const authContract = c.router(
       method: "GET",
       path: `/users`,
       responses: {
-        [STATUS_CODES.SUCCESS]: z.null(),
+        [STATUS_CODES.SUCCESS]: z.string(),
       },
     },
   },
   {
+    strictStatusCodes: true,
     pathPrefix: "/auth",
   },
 );

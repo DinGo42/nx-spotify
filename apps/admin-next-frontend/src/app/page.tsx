@@ -1,4 +1,4 @@
-import { Footer, MainContentContainer, SideBar } from "@spotify/widgets";
+import { Footer, MainContentContainer, SideBar } from "@/widgets";
 
 export default async function Index() {
   return (
