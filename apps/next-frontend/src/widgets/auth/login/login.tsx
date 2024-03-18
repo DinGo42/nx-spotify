@@ -5,7 +5,7 @@ import { Routes } from "@/shared";
 import { LoginUserType, loginUserSchema } from "./schema";
 import { ApiResponse } from "@/shared/utils/server";
 import { STATUS_CODES } from "@shared";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type LoginProps = {
   onSubmit: (args: LoginUserType) => Promise<ApiResponse<"loginUser">>;
@@ -13,6 +13,7 @@ type LoginProps = {
 
 export const Login: FC<LoginProps> = ({ onSubmit }) => {
   const [passwordShown, setPasswordShown] = useState(false);
+  const { push } = useRouter();
   const { toast } = useToast();
   const { control, handleSubmit } = useCustomForm({
     schema: loginUserSchema,
@@ -29,7 +30,7 @@ export const Login: FC<LoginProps> = ({ onSubmit }) => {
       return;
     }
 
-    return redirect(Routes.HOME);
+    push(Routes.HOME);
   };
 
   return (
