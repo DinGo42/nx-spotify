@@ -1,5 +1,5 @@
-import { ArrowIcon, BellIcon, GroupIcon } from "@web-shared";
-import { Button, Image } from "@web-shared";
+import { ArrowIcon, BellIcon, GroupIcon } from "@web-shared/icons";
+import { Button, Image } from "@web-shared/components";
 
 export const Header = () => (
   <div className="sticky top-0 flex w-full items-center justify-between">
@@ -7,10 +7,7 @@ export const Header = () => (
       <Button styleType={"MAIN_ROUND"} className="hover:bg-black-200">
         <ArrowIcon />
       </Button>
-      <Button
-        styleType={"MAIN_ROUND"}
-        className="rotate-180 hover:bg-black-200"
-      >
+      <Button styleType={"MAIN_ROUND"} className="hover:bg-black-200 rotate-180">
         <ArrowIcon />
       </Button>
     </div>
@@ -21,10 +18,7 @@ export const Header = () => (
       <Button styleType={"MAIN_ROUND"} className="group hover:scale-105">
         <GroupIcon className="group-hover:fill-white-800" />
       </Button>
-      <Button
-        styleType={"MAIN_ROUND"}
-        className="relative size-8 overflow-hidden bg-white-800 p-0 hover:scale-105"
-      >
+      <Button styleType={"MAIN_ROUND"} className="bg-white-800 relative size-8 overflow-hidden p-0 hover:scale-105">
         <Image alt="" width={100} height={100} src="/selyavi.jpg" />
       </Button>
     </div>

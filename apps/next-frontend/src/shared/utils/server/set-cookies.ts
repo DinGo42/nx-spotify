@@ -1,4 +1,4 @@
-import { cookiesUtil } from "@web-shared";
+import { cookiesUtil } from "@web-shared/utils/server";
 
 const accessTokenService = cookiesUtil<string>("accessToken");
 const refreshTokenService = cookiesUtil<string>("refreshToken");

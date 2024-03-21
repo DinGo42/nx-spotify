@@ -1,8 +1,9 @@
 "use client";
 import { FC, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { cn, Button, Image } from "@web-shared";
-import { PauseIcon, PlayIcon } from "@web-shared";
+import { Button, Image } from "@web-shared/components";
+import { PauseIcon, PlayIcon } from "@web-shared/icons";
+import { cn } from "@web-shared/utils";
 
 export enum RecentlyPlayedTypes {
   USER_PLAYLIST = "grid grid-cols-2",
@@ -15,16 +16,12 @@ type RecentlyPlayedProps = {
   type?: keyof typeof RecentlyPlayedTypes;
 };
 
-export const RecentlyPlayed: FC<RecentlyPlayedProps> = ({
-  cover,
-  title,
-  type = "COMMUNITY_PLAYLIST",
-}) => {
+export const RecentlyPlayed: FC<RecentlyPlayedProps> = ({ cover, title, type = "COMMUNITY_PLAYLIST" }) => {
   const [played, setPlayed] = useState(false);
   return (
     <div className="group relative flex min-w-[300px] max-w-full grow items-center justify-between overflow-hidden rounded-md bg-[#2c2b2d] transition-colors hover:bg-[#494547]">
       <div className="flex items-center gap-4">
-        <div className={cn("size-20 bg-white-800", RecentlyPlayedTypes[type])}>
+        <div className={cn("bg-white-800 size-20", RecentlyPlayedTypes[type])}>
           {cover.map((src) => (
             <Image
               key={uuidv4()}
@@ -37,9 +34,7 @@ export const RecentlyPlayed: FC<RecentlyPlayedProps> = ({
             />
           ))}
         </div>
-        <span className="text-md w-[120px] overflow-hidden text-ellipsis font-bold">
-          {title}
-        </span>
+        <span className="text-md w-[120px] overflow-hidden text-ellipsis font-bold">{title}</span>
       </div>
       <Button
         onClick={() => setPlayed((prev) => !prev)}

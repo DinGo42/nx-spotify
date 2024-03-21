@@ -1,6 +1,6 @@
 "use client";
-import { MinVolumeIcon, MidVolumeIcon, MaxVolumeIcon } from "@web-shared";
-import { Button, Slider } from "@web-shared";
+import { MinVolumeIcon, MidVolumeIcon, MaxVolumeIcon } from "@web-shared/icons";
+import { Button, Slider } from "@web-shared/components";
 import { FC, useState } from "react";
 
 export const SoundSlider: FC = () => {
@@ -10,11 +10,11 @@ export const SoundSlider: FC = () => {
     <div className="flex items-center gap-2">
       <Button onClick={() => setMute((prev) => !prev)}>
         {muted || volume < 33 ? (
-          <MinVolumeIcon className="transition-colors hover:fill-white-1000" />
+          <MinVolumeIcon className="hover:fill-white-1000 transition-colors" />
         ) : volume < 66 ? (
-          <MidVolumeIcon className="transition-colors hover:fill-white-1000" />
+          <MidVolumeIcon className="hover:fill-white-1000 transition-colors" />
         ) : (
-          <MaxVolumeIcon className="transition-colors hover:fill-white-1000" />
+          <MaxVolumeIcon className="hover:fill-white-1000 transition-colors" />
         )}
       </Button>
       <Slider
