@@ -1,14 +1,16 @@
 "use client";
-import { FC, useState } from "react";
-import { Button, FormInput, Link, ShownIcon, UnShownIcon, useCustomForm, useToast } from "@web-shared";
 import { Routes } from "@/shared";
-import { LoginUserType, loginUserSchema } from "./schema";
 import { ApiResponse } from "@/shared/utils/server";
 import { STATUS_CODES } from "@shared";
+import { Button, FormInput, Link } from "@web-shared/components";
+import { useCustomForm, useToast } from "@web-shared/hooks";
+import { ShownIcon, UnShownIcon } from "@web-shared/icons";
 import { useRouter } from "next/navigation";
+import { FC, useState } from "react";
+import { LoginUserType, loginUserSchema } from "./schema";
 
 type LoginProps = {
-  onSubmit: (args: LoginUserType) => Promise<ApiResponse<"loginUser">>;
+  onSubmit: (args: LoginUserType) => Promise<ApiResponse<"auth", "loginUser">>;
 };
 
 export const Login: FC<LoginProps> = ({ onSubmit }) => {
@@ -22,15 +24,12 @@ export const Login: FC<LoginProps> = ({ onSubmit }) => {
   const submitHandler = async (data: LoginUserType) => {
     const { body, status } = await onSubmit(data);
 
-    if (status !== STATUS_CODES.SUCCESS) {
-      toast({
-        title: `Oops you got error. ${body.name} ${status}`,
-        description: body.message,
-      });
-      return;
-    }
-
-    push(Routes.HOME);
+    if (status === STATUS_CODES.SUCCESS) return push(Routes.HOME);
+    toast({
+      title: `Oops you got error. ${body.name} ${status}`,
+      description: body.message,
+    });
+    return;
   };
 
   return (
