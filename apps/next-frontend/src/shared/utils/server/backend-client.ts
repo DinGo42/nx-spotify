@@ -1,12 +1,15 @@
-import { authContract } from "@shared";
 import { cookies } from "next/headers";
 import { ServerInferResponses, initClient } from "@ts-rest/core";
+import { userApiContract } from "@shared";
 
-type ApiResponseShapes = ServerInferResponses<typeof authContract>;
+type ApiResponseShapes = ServerInferResponses<typeof userApiContract>;
 
-export type ApiResponse<T extends keyof ApiResponseShapes> = ServerInferResponses<(typeof authContract)[T]>;
+export type ApiResponse<
+  T extends keyof ApiResponseShapes,
+  K extends keyof ServerInferResponses<(typeof userApiContract)[T]>,
+> = ServerInferResponses<(typeof userApiContract)[T]>[K];
 
-export const api = initClient(authContract, {
+export const api = initClient(userApiContract, {
   api: async ({ body, cache, credentials, headers, method, next, path, route, signal }) => {
     const result = await fetch(path, {
       body,
