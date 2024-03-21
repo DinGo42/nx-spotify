@@ -1,11 +1,6 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { UserRoles } from "@bd";
-import {
-  NotFoundErrorSchema,
-  STATUS_CODES,
-  UnauthorizedErrorSchema,
-} from "@shared";
+import { NotFoundErrorSchema, STATUS_CODES, UnauthorizedErrorSchema } from "@shared";
 
 const c = initContract();
 
@@ -16,9 +11,8 @@ const LoginSchema = z.object({
 
 const userDTOSchema = z.object({
   id: z.string(),
-  userName: z.string(),
+  nickname: z.string(),
   email: z.string().email(),
-  role: z.nativeEnum(UserRoles),
   createdAt: z.date(),
 });
 
