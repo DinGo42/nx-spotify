@@ -1,4 +1,4 @@
-import { LogoIcon } from "@web-shared";
+import { LogoIcon } from "@web-shared/icons";
 
 export default function AuthLayout({
   children,
