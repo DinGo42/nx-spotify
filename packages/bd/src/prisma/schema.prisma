@@ -8,21 +8,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRoles  {
-  ADMIN
-  USER
-  CREATOR
+
+model User {
+  id                 String           @id @default(uuid())
+  nickname           String
+  avatar             String?
+  email              String           @unique
+  password           String
+  banned             Boolean          @default(false)
+  playlists          Playlist[]
+  listeningHistory   Song[]           @relation("ListeningHistory")
+  createdAt          DateTime         @default(now())
 }
 
-model users {
-  id String @id @default(uuid())
-  userName String 
-  email String @unique
-  password String
-  role UserRoles @default(USER)
-  banned Boolean @default(false)
-  createdAt DateTime @default(now())
+model Admin {
+  id                 String           @id @default(uuid())
+  email              String           @unique
+  password           String
+}
+
+
+model Creator {
+  id                 String           @id @default(uuid())
+  nickname           String             
+  avatar             String?
+  email              String           @unique
+  password           String
+  albums             Album[]
+  songs              Song[]          
+  createdAt          DateTime         @default(now())
 }
 
 
 
+model Playlist {
+  id                 String           @id @default(uuid())
+  name               String
+  description        String
+  cover              String[]
+  authors            User[] 
+  songs              Song[]
+  createdAt          DateTime         @default(now())
+}
+
+model Album {
+  id                 String           @id @default(uuid())
+  name               String
+  description        String
+  cover              String[]
+  songs              Song[]
+  authors            Creator[] 
+  createdAt          DateTime         @default(now())
+}
+
+ 
+model Song {
+  id                 String           @id @default(uuid())
+  name               String
+  authors            Creator[]          
+  listeners          User[]           @relation("ListeningHistory")
+  playlists          Playlist[]
+  albums             Album[]            
+  cover              String
+  link               String
+  createdAt          DateTime         @default(now())
+}
