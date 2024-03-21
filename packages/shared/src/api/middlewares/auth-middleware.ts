@@ -1,14 +1,20 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { TsRestRequest } from "@ts-rest/express";
 import { UnauthorizedError } from "../../utils";
 import { tokenService } from "../services";
+import { AppRouter, AppRoute } from "@ts-rest/core";
 
 const { refreshTokens, saveTokens } = tokenService();
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = <T extends AppRouter | AppRoute>(
+  req: TsRestRequest<T>,
+  res: Response,
+  next: NextFunction,
+) => {
   const refreshToken = req.cookies.refreshToken;
   const accessToken = req.cookies.accessToken && req.cookies.accessToken.split(" ")[1];
 
-  if (!refreshToken) return next(new UnauthorizedError(`Session expired`));
+  if (!refreshToken && !accessToken) return next(new UnauthorizedError(`Session expired`));
 
   const newTokens = refreshTokens({
     accessToken,

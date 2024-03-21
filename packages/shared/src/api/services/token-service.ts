@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Response } from "express";
 import { ServerError } from "../../utils";
 
@@ -7,39 +7,41 @@ type TokenServiceProps = {
   refreshTokenMaxTime?: number;
 };
 
-const accessTokenMaxTime = 1800000;
-const refreshTokenMaxTime = 2592000000;
+export const accessTokenMaxTime = 1800000;
+export const refreshTokenMaxTime = 2592000000;
 
-export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
-  const generateToken = (payload: object | string) => {
+export const tokenService = <T extends object | string>(tokensMaxTime?: TokenServiceProps) => {
+  const generateToken = (payload: T) => {
     if (!process.env.JWT_REFRESH_SECRET_KEY || !process.env.JWT_ACCESS_SECRET_KEY)
       throw new ServerError("Token secret key is missing");
-    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET_KEY, {
-      expiresIn: tokensMaxTime?.refreshTokenMaxTime || refreshTokenMaxTime,
+    const refreshToken = jwt.sign({ payload }, process.env.JWT_REFRESH_SECRET_KEY, {
+      expiresIn: tokensMaxTime?.refreshTokenMaxTime ?? refreshTokenMaxTime,
     });
 
-    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET_KEY, {
-      expiresIn: tokensMaxTime?.accessTokenMaxTime || accessTokenMaxTime,
+    const accessToken = jwt.sign({ payload }, process.env.JWT_ACCESS_SECRET_KEY, {
+      expiresIn: tokensMaxTime?.accessTokenMaxTime ?? accessTokenMaxTime,
     });
     return { refreshToken, accessToken };
   };
 
-  const validateRefreshToken = (token: string | null): JwtPayload | null => {
-    if (!process.env.JWT_REFRESH_SECRET_KEY) throw new ServerError("Token secret key is missing");
-    if (!token) return null;
-    const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET_KEY);
-    if (typeof userData === "string") return null;
-    return userData;
+  const decodeToken = (token: string | null) => {
+    return jwt.decode(token ?? "", {
+      complete: true,
+      //@ts-expect-error
+    })?.payload?.payload as T | null;
   };
 
-  const validateAccessToken = (token: string | null) => {
-    if (!process.env.JWT_ACCESS_SECRET_KEY) throw new ServerError("Token secret key is missing");
-    if (!token) return null;
-    const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET_KEY);
-    if (typeof userData === "string") return null;
-    return userData;
-  };
+  const checkTokens = ({ accessToken, refreshToken }: { accessToken: string | null; refreshToken: string | null }) => {
+    const accessTokenCheck = decodeToken(accessToken);
 
+    if (accessTokenCheck) return accessTokenCheck;
+
+    const refreshTokenCheck = decodeToken(refreshToken);
+
+    if (!refreshTokenCheck) return null;
+
+    return refreshTokenCheck;
+  };
   const refreshTokens = ({
     accessToken,
     refreshToken,
@@ -47,18 +49,11 @@ export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
     accessToken: string | null;
     refreshToken: string | null;
   }) => {
-    const accessTokenCheck = validateAccessToken(accessToken);
-
-    if (accessTokenCheck && accessToken && refreshToken) return { accessToken, refreshToken };
-
-    const checkResult = validateRefreshToken(refreshToken);
+    const checkResult = checkTokens({ accessToken, refreshToken });
 
     if (!checkResult) return null;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { aud, exp, iat, iss, jti, nbf, sub, ...userData } = checkResult;
-
-    const newTokens = generateToken(userData);
+    const newTokens = generateToken(checkResult);
 
     return newTokens;
   };
@@ -75,11 +70,11 @@ export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
 
-      maxAge: tokensMaxTime?.refreshTokenMaxTime || refreshTokenMaxTime,
+      maxAge: tokensMaxTime?.refreshTokenMaxTime ?? refreshTokenMaxTime,
     });
     res.cookie("accessToken", `Bearer ${accessToken}`, {
       httpOnly: true,
-      maxAge: tokensMaxTime?.accessTokenMaxTime || accessTokenMaxTime,
+      maxAge: tokensMaxTime?.accessTokenMaxTime ?? accessTokenMaxTime,
     });
   };
 
@@ -96,10 +91,10 @@ export const tokenService = (tokensMaxTime?: TokenServiceProps) => {
   };
   return {
     generateToken,
-    validateRefreshToken,
-    validateAccessToken,
+    decodeToken,
     refreshTokens,
     saveTokens,
     deleteTokens,
+    checkTokens,
   };
 };
