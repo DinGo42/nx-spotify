@@ -1,12 +1,16 @@
 "use client";
-import { useCustomForm } from "@web-shared";
+import { useCustomForm, useToast } from "@web-shared/hooks";
 import { FC, useCallback, useState } from "react";
 import { FirstStep } from "./first-step";
 import { SecondStep } from "./second-step";
 import { ThirdStep } from "./third-step";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { ProgressBar } from "./progress-bar";
-import { CreateUserType, createUserSchema } from "./schema";
+import { CreateUserType, signUpSchema } from "./schema";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/shared";
+import { ApiResponse } from "@/shared/utils/server";
+import { STATUS_CODES } from "@shared";
 
 export type SignUpChildFormProps = {
   setValueToParentForm: UseFormSetValue<CreateUserType>;
@@ -35,21 +39,34 @@ export const signUpFormSteps = [
 ];
 
 type SignUpProps = {
-  onSubmit: (args: CreateUserType) => void;
+  onSubmit: (args: CreateUserType) => Promise<ApiResponse<"auth", "createUser">>;
 };
 
 export const SignUp: FC<SignUpProps> = ({ onSubmit }) => {
   const [currentStep, setStep] = useState(0);
+  const { push } = useRouter();
+  const { toast } = useToast();
 
   const { handleSubmit, getValues, setValue } = useCustomForm({
-    schema: createUserSchema,
+    schema: signUpSchema,
   });
 
   const nextStep = useCallback(() => {
     const nextStep = currentStep + 1;
 
     if (nextStep === Object.keys(signUpFormSteps).length) {
-      handleSubmit((data) => onSubmit(data))();
+      handleSubmit(async (data) => {
+        const { status, body } = await onSubmit(data);
+
+        if (status === STATUS_CODES.SUCCESS) return push(Routes.HOME);
+
+        toast({
+          title: `Oops you got error. ${body.name} ${status}`,
+          description: body.message,
+        });
+        return;
+      })();
+
       return;
     }
     if (nextStep > Object.keys(signUpFormSteps).length) return;

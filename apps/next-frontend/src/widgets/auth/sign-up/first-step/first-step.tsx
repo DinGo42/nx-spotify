@@ -1,12 +1,13 @@
 "use client";
-import { Button, FormInput, Link, useCustomForm } from "@web-shared";
+import { Button, FormInput, Link } from "@web-shared/components";
 import { SignUpChildFormProps } from "../sign-up";
 import z from "zod";
 import { memo, useCallback } from "react";
 import { Routes } from "@/shared";
-import { createUserSchema } from "../schema";
+import { signUpSchema } from "../schema";
+import { useCustomForm } from "@web-shared/hooks";
 
-const firstStepSchema = createUserSchema.pick({ email: true });
+const firstStepSchema = signUpSchema.pick({ email: true });
 
 type FirstStepSchema = z.infer<typeof firstStepSchema>;
 

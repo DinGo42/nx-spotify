@@ -1,5 +1,5 @@
-import { authContract } from "@shared";
+import { userApiContract } from "@shared";
 import { ClientInferRequest } from "@ts-rest/core";
 
-export const createUserSchema = authContract.createUser["body"];
-export type CreateUserType = ClientInferRequest<typeof authContract.createUser>["body"];
+export const signUpSchema = userApiContract.auth.createUser["body"];
+export type CreateUserType = ClientInferRequest<typeof userApiContract.auth.createUser>["body"];

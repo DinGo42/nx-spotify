@@ -1,12 +1,15 @@
 "use client";
 import z from "zod";
 import { PasswordErrorMessages } from "@shared";
-import { ArrowIcon, Button, FormInput, ShownIcon, UnShownIcon, cn, useCustomForm } from "@web-shared";
 import { FC, memo, useCallback, useState } from "react";
 import { SignUpChildFormProps, signUpFormSteps } from "../sign-up";
-import { createUserSchema } from "../schema";
+import { signUpSchema } from "../schema";
+import { Button, FormInput } from "@web-shared/components";
+import { useCustomForm } from "@web-shared/hooks";
+import { ArrowIcon, ShownIcon, UnShownIcon } from "@web-shared/icons";
+import { cn, getErrorMessages } from "@web-shared/utils";
 
-const secondStepSchema = createUserSchema.pick({ password: true });
+const secondStepSchema = signUpSchema.pick({ password: true });
 
 type SecondStepSchema = z.infer<typeof secondStepSchema>;
 
@@ -21,8 +24,6 @@ const passwordErrorsText: Record<PasswordErrorMessages, string> = {
   [PasswordErrorMessages.TO_SHORT]: "10 characters",
 };
 
-const passwordErrorKeys = Object.keys(passwordErrorsText);
-
 export const PasswordToolTip: FC<PasswordToolTipProps> = memo(({ text, className }) => (
   <div className="flex items-center gap-2 text-sm font-medium">
     <div className={cn("size-3 rounded-full border-[1px]", className)} />
@@ -30,6 +31,11 @@ export const PasswordToolTip: FC<PasswordToolTipProps> = memo(({ text, className
     <span>{text}</span>
   </div>
 ));
+
+const { checkValue } = getErrorMessages({
+  errorMessages: passwordErrorsText,
+  schema: secondStepSchema,
+});
 
 export const SecondStep = memo(
   ({
@@ -55,10 +61,8 @@ export const SecondStep = memo(
       [nextFormStep, setValueToParentForm],
     );
 
-    const password = watch("password");
-    const passwordChecksState = secondStepSchema.safeParse({ password: password ?? "" });
+    const passwordChecksState = checkValue({ password: watch("password") ?? "" });
 
-    console.log(!passwordChecksState.success && passwordChecksState.error.errors);
     return (
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -96,17 +100,8 @@ export const SecondStep = memo(
 
           <div className="flex flex-col gap-3">
             <span className="font-bold">Your password must contain at least</span>
-            {passwordErrorKeys.map((errorMessage) => (
-              <PasswordToolTip
-                key={errorMessage}
-                text={passwordErrorsText[errorMessage as PasswordErrorMessages]}
-                className={
-                  !passwordChecksState.success &&
-                  passwordChecksState.error.errors.find((errorName) => errorName.message === errorMessage)
-                    ? ""
-                    : "border-green-800 bg-green-800"
-                }
-              />
+            {passwordChecksState?.map(({ message, fatal }) => (
+              <PasswordToolTip key={message} text={message} className={fatal ? "" : "border-green-800 bg-green-800"} />
             ))}
           </div>
           <Button

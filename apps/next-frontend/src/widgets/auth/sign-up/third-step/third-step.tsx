@@ -1,11 +1,13 @@
 "use client";
 import z from "zod";
 import { memo, useCallback } from "react";
-import { ArrowIcon, Button, FormInput, useCustomForm } from "@web-shared";
 import { SignUpChildFormProps, signUpFormSteps } from "../sign-up";
-import { createUserSchema } from "../schema";
+import { signUpSchema } from "../schema";
+import { Button, FormInput } from "@web-shared/components";
+import { useCustomForm } from "@web-shared/hooks";
+import { ArrowIcon } from "@web-shared/icons";
 
-const thirdStepSchema = createUserSchema.pick({ userName: true });
+const thirdStepSchema = signUpSchema.pick({ nickname: true });
 
 type ThirdStepSchema = z.infer<typeof thirdStepSchema>;
 
@@ -20,13 +22,13 @@ export const ThirdStep = memo(
     const { control, handleSubmit } = useCustomForm({
       schema: thirdStepSchema,
       defaultValues: {
-        userName: getValuesFromParentForm("userName"),
+        nickname: getValuesFromParentForm("nickname"),
       },
     });
 
     const onSubmit = useCallback(
-      ({ userName }: ThirdStepSchema) => {
-        setValueToParentForm("userName", userName);
+      ({ nickname }: ThirdStepSchema) => {
+        setValueToParentForm("nickname", nickname);
         nextFormStep();
       },
       [nextFormStep, setValueToParentForm],
@@ -55,7 +57,7 @@ export const ThirdStep = memo(
             styleType={"MAIN"}
             className="h-12"
             control={control}
-            name="userName"
+            name="nickname"
           >
             <span className="text-base font-semibold">Nickname</span>
           </FormInput>
