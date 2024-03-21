@@ -22,7 +22,7 @@
       "@/icons": ["apps/next-frontend/public/svg"],
       "@bd": ["packages/bd/src/index.ts"],
       "@shared": ["packages/shared/src/index.ts"],
-      "@web-shared": ["packages/web-shared/src/index.ts"]
+      "@web-shared/*": ["packages/web-shared/src/*"]
     }
   },
   "include": [

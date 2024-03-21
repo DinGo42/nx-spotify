@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { Cairo } from "next/font/google";
 import "./global.css";
-import { AppWrapper, Toaster } from "@web-shared";
+import { AppWrapper, Toaster } from "@web-shared/components";
 
 const сairo = Cairo({
   subsets: ["latin"],
