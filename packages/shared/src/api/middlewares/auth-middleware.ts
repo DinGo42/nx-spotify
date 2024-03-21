@@ -27,6 +27,7 @@ export const authMiddleware = <T extends AppRouter | AppRoute>(
 
   saveTokens({
     res,
+    req,
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,
   });

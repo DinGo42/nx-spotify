@@ -16,6 +16,7 @@ export const authController: RecursiveRouterObj<typeof authContract> = {
     });
 
     saveTokens({
+      req,
       res,
       refreshToken: refreshToken,
       accessToken: accessToken,

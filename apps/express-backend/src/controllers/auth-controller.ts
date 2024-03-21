@@ -15,6 +15,7 @@ export const authController: RecursiveRouterObj<typeof userApiContract.auth> = {
     });
 
     saveTokens({
+      req,
       res,
       refreshToken: refreshToken,
       accessToken: accessToken,
@@ -34,6 +35,7 @@ export const authController: RecursiveRouterObj<typeof userApiContract.auth> = {
     });
 
     saveTokens({
+      req,
       res,
       refreshToken: refreshToken,
       accessToken: accessToken,

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Response } from "express";
+import { Response, Request } from "express";
 import { ServerError } from "../../utils";
 
 type TokenServiceProps = {
@@ -62,8 +62,10 @@ export const tokenService = <T extends object | string>(tokensMaxTime?: TokenSer
     accessToken,
     refreshToken,
     res,
+    req,
   }: {
     res: Response;
+    req: Request;
     accessToken: string;
     refreshToken: string;
   }) => {
@@ -76,6 +78,9 @@ export const tokenService = <T extends object | string>(tokensMaxTime?: TokenSer
       httpOnly: true,
       maxAge: tokensMaxTime?.accessTokenMaxTime ?? accessTokenMaxTime,
     });
+
+    req.cookies.accessToken = `Bearer ${accessToken}`;
+    req.cookies.refreshToken = refreshToken;
   };
 
   const deleteTokens = (res: Response) => {

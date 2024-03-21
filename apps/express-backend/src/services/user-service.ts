@@ -1,18 +1,14 @@
-import { PrismaClient } from "@bd";
-import { NotFoundError, UnauthorizedError } from "@shared";
-import { checkTokens } from "../main";
+import { PrismaClient, userSchema } from "@bd";
+import { NotFoundError } from "@shared";
+import { z } from "zod";
 
 const prisma = new PrismaClient();
 
 export const userService = () => {
-  const getSelf = async ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) => {
-    const result = checkTokens({ accessToken: accessToken?.split(" ")[1], refreshToken });
-
-    if (!result) throw new UnauthorizedError(`Session expired`);
-
+  const getSelf = async ({ id }: { id: string }) => {
     const user = await prisma.user.findUnique({
       where: {
-        id: result,
+        id,
       },
       include: {
         playlists: {
@@ -25,10 +21,32 @@ export const userService = () => {
 
     if (!user) throw new NotFoundError(`Failed to get information. User not found`);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userDTO } = user;
 
     return userDTO;
   };
-  return { getSelf };
+
+  const updateAccount = async ({ id, playlists, listeningHistory, ...fields }: Partial<z.infer<typeof userSchema>>) => {
+    const user = await prisma.user.update({
+      where: { id: id },
+      data: {
+        ...fields,
+        playlists: {
+          connect: playlists?.map((id) => id),
+        },
+        listeningHistory: {
+          connect: listeningHistory?.map((id) => id),
+        },
+      },
+    });
+    if (!user) throw new NotFoundError(`Failed to get information. User not found`);
+  };
+
+  const deleteAccount = async ({ id }: { id: string }) => {
+    const user = await prisma.user.delete({
+      where: { id: id },
+    });
+    if (!user) throw new NotFoundError(`Failed to get information. User not found`);
+  };
+  return { getSelf, updateAccount, deleteAccount };
 };
