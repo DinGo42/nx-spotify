@@ -1,18 +1,17 @@
 import { authService } from "../services";
 import { RecursiveRouterObj } from "@ts-rest/express/src/lib/types";
-import { STATUS_CODES, authContract, authMiddleware, tokenService } from "@shared";
+import { STATUS_CODES, authMiddleware, userApiContract } from "@shared";
+import { saveTokens, deleteTokens } from "../main";
 
 const { login: loginService, signup: signupService } = authService();
-const { deleteTokens, saveTokens } = tokenService();
 
-export const authController: RecursiveRouterObj<typeof authContract> = {
+export const authController: RecursiveRouterObj<typeof userApiContract.auth> = {
   createUser: async ({ req, res }) => {
-    const { email, password, userName } = req.body;
-
-    const { accessToken, refreshToken, user } = await signupService({
+    const { email, password, nickname } = req.body;
+    const { accessToken, refreshToken } = await signupService({
       email,
       password,
-      userName,
+      nickname,
     });
 
     saveTokens({
@@ -23,13 +22,13 @@ export const authController: RecursiveRouterObj<typeof authContract> = {
 
     return {
       status: STATUS_CODES.SUCCESS,
-      body: user,
+      body: null,
     };
   },
   loginUser: async ({ req, res }) => {
     const { email, password } = req.body;
 
-    const { accessToken, refreshToken, ...user } = await loginService({
+    const { accessToken, refreshToken } = await loginService({
       email,
       password,
     });
@@ -42,7 +41,7 @@ export const authController: RecursiveRouterObj<typeof authContract> = {
 
     return {
       status: STATUS_CODES.SUCCESS,
-      body: user,
+      body: null,
     };
   },
   logoutUser: async ({ res }) => {

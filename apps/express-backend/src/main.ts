@@ -2,11 +2,14 @@ import express, { json } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { authRouter } from "./routes";
 import { createExpressEndpoints } from "@ts-rest/express";
-import { authContract, errorMiddleware } from "@shared";
+import { errorMiddleware, tokenService, userApiContract } from "@shared";
+import { router } from "./routes";
 
 dotenv.config();
+
+export const { generateToken, deleteTokens, refreshTokens, saveTokens, decodeToken, checkTokens } =
+  tokenService<string>();
 
 const port = process.env.PORT || 3333;
 
@@ -19,7 +22,9 @@ app.use(
   }),
 );
 app.use(cookieParser());
-createExpressEndpoints(authContract, authRouter, app);
+
+createExpressEndpoints(userApiContract, router, app);
+
 app.use(errorMiddleware);
 
 const server = app.listen(port, () => {
