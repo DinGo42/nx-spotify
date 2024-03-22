@@ -1,8 +1,8 @@
-import { userSchema } from "@bd";
+import { userSchema } from "@db";
+import { z } from "zod";
 import { NotFoundErrorSchema, UnauthorizedErrorSchema } from "../../utils";
 import { STATUS_CODES } from "../constants";
 import { ContractInstance } from "./type";
-import { z } from "zod";
 
 export const userContract = (c: ContractInstance) =>
   c.router(

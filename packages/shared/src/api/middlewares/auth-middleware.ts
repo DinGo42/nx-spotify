@@ -1,8 +1,8 @@
-import { NextFunction, Response } from "express";
+import { AppRoute, AppRouter } from "@ts-rest/core";
 import { TsRestRequest } from "@ts-rest/express";
+import { NextFunction, Response } from "express";
 import { UnauthorizedError } from "../../utils";
 import { tokenService } from "../services";
-import { AppRouter, AppRoute } from "@ts-rest/core";
 
 const { refreshTokens, saveTokens } = tokenService();
 

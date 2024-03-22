@@ -1,10 +1,5 @@
-import {
-  ReactNode,
-  DetailedHTMLProps,
-  ButtonHTMLAttributes,
-  forwardRef,
-} from "react";
-import { cn } from "../utils";
+import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode, forwardRef } from "react";
+import { cn } from "../../utils/client";
 
 export enum ButtonStyleTypes {
   MAIN_ROUND = "p-1 rounded-full bg-black-400 transition-colors",
@@ -15,18 +10,11 @@ export type ButtonProps = {
   children: ReactNode;
   styleType?: keyof typeof ButtonStyleTypes;
   className?: string;
-} & DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->;
+} & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, styleType, className, ...props }, ref) => (
-    <button
-      className={cn(styleType && ButtonStyleTypes[styleType], className)}
-      ref={ref}
-      {...props}
-    >
+    <button className={cn(styleType && ButtonStyleTypes[styleType], className)} ref={ref} {...props}>
       {children}
     </button>
   ),

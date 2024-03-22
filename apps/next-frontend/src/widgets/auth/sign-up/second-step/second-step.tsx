@@ -1,13 +1,13 @@
 "use client";
-import z from "zod";
 import { PasswordErrorMessages } from "@shared";
-import { FC, memo, useCallback, useState } from "react";
-import { SignUpChildFormProps, signUpFormSteps } from "../sign-up";
-import { signUpSchema } from "../schema";
 import { Button, FormInput } from "@web-shared/components";
 import { useCustomForm } from "@web-shared/hooks";
 import { ArrowIcon, ShownIcon, UnShownIcon } from "@web-shared/icons";
-import { cn, getErrorMessages } from "@web-shared/utils";
+import { cn, getErrorMessages } from "@web-shared/utils/client";
+import { FC, memo, useCallback, useState } from "react";
+import z from "zod";
+import { signUpSchema } from "../schema";
+import { SignUpChildFormProps, signUpFormSteps } from "../sign-up";
 
 const secondStepSchema = signUpSchema.pick({ password: true });
 

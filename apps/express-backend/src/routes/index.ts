@@ -1,10 +1,11 @@
+import { userApiContract } from "@shared/api";
 import { initServer } from "@ts-rest/express";
-import { authController, userController } from "../controllers";
-import { userApiContract } from "@shared";
+import { userController } from "../controllers";
+import { authModule } from "../modules";
 
 const s = initServer();
 
 export const router = s.router(userApiContract, {
-  auth: authController,
+  auth: authModule,
   user: userController,
 });

@@ -6,8 +6,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@typescript-eslint/ban-ts-comment": "ignore",
-        "@typescript-eslint/require-ts-comment-description": "ignore",
+        "no-unused-vars": "warn",
         "@nx/enforce-module-boundaries": [
           "error",
           {

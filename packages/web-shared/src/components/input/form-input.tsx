@@ -1,8 +1,8 @@
-import { ReactNode, forwardRef, ForwardedRef } from "react";
-import { UseControllerProps, Path, useController } from "react-hook-form";
+import { ForwardedRef, ReactNode, forwardRef } from "react";
+import { Path, UseControllerProps, useController } from "react-hook-form";
 import { z } from "zod";
-import { cn } from "../utils";
-import { InputProps, Input } from "./input";
+import { cn } from "../../utils/client";
+import { Input, InputProps } from "./input";
 
 export type FormInputProps<T extends z.Schema> = {
   phoneInput?: false;

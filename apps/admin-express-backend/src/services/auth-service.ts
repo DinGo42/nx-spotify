@@ -1,19 +1,13 @@
-import argon2 from "argon2";
-import { PrismaClient } from "@bd";
+import { PrismaClient } from "@db";
 import { NotFoundError, UnauthorizedError, tokenService } from "@shared";
+import argon2 from "argon2";
 
 const prisma = new PrismaClient();
 
 const { generateToken } = tokenService();
 
 export const authService = () => {
-  const login = async ({
-    password,
-    email,
-  }: {
-    email: string;
-    password: string;
-  }) => {
+  const login = async ({ password, email }: { email: string; password: string }) => {
     const user = await prisma.users.findUnique({
       where: {
         email,
@@ -25,8 +19,7 @@ export const authService = () => {
 
     const { password: hashedPassword, ...userDto } = user;
 
-    if (!(await argon2.verify(hashedPassword, password)))
-      throw new UnauthorizedError(`Password doesn't match`);
+    if (!(await argon2.verify(hashedPassword, password))) throw new UnauthorizedError(`Password doesn't match`);
 
     const tokens = generateToken({
       ...userDto,

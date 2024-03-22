@@ -1,4 +1,4 @@
-import { PrismaClient } from "@bd";
+import { PrismaClient } from "@db";
 import { NotFoundError } from "@shared";
 
 const prisma = new PrismaClient();

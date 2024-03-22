@@ -1,7 +1,8 @@
+import { authMiddleware, userApiContract } from "@shared/api";
 import { RecursiveRouterObj } from "@ts-rest/express/src/lib/types";
-import { STATUS_CODES, authMiddleware, userApiContract } from "@shared";
-import { userService } from "../services";
+import { STATUS_CODES } from "http";
 import { decodeToken, deleteTokens } from "../main";
+import { userService } from "../services";
 
 const {
   getSelf: getSelfService,
@@ -9,7 +10,7 @@ const {
   deleteAccount: deleteAccountService,
 } = userService();
 
-export const userController: RecursiveRouterObj<typeof userApiContract.user> = {
+export const userController: RecursiveRouterObj<typeof userApiContract.user>["getSelf"] = {
   getSelf: {
     handler: async ({ req }) => {
       const { accessToken } = req.cookies;

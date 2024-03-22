@@ -1,4 +1,4 @@
-import { PrismaClient, userSchema } from "@bd";
+import { PrismaClient, userSchema } from "@db";
 import { NotFoundError } from "@shared";
 import { z } from "zod";
 
@@ -21,6 +21,7 @@ export const userService = () => {
 
     if (!user) throw new NotFoundError(`Failed to get information. User not found`);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userDTO } = user;
 
     return userDTO;
