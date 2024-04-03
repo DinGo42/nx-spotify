@@ -1,13 +1,13 @@
-import { authService } from "../services";
-import { RecursiveRouterObj } from "@ts-rest/express/src/lib/types";
 import { STATUS_CODES, authMiddleware, tokenService } from "@shared";
+import { RecursiveRouterObj } from "@ts-rest/express/src/lib/types";
 import { authContract } from "../contracts";
+import { authService } from "../services";
 
 const { login: loginService } = authService();
 const { deleteTokens, saveTokens } = tokenService();
 
 export const authController: RecursiveRouterObj<typeof authContract> = {
-  loginUser: async ({ req, res }) => {
+  login: async ({ req, res }) => {
     const { email, password } = req.body;
 
     const { accessToken, refreshToken, user } = await loginService({
@@ -27,7 +27,7 @@ export const authController: RecursiveRouterObj<typeof authContract> = {
       body: user,
     };
   },
-  logoutUser: async ({ res }) => {
+  logout: async ({ res }) => {
     deleteTokens(res);
 
     return {

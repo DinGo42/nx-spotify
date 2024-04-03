@@ -1,35 +1,37 @@
-import { ForwardedRef, ReactNode, forwardRef } from "react";
-import { Path, UseControllerProps, useController } from "react-hook-form";
-import { z } from "zod";
-import { cn } from "../../utils/client";
+"use client";
+import { ReactElement } from "react";
+import { Control, FieldPathByValue, FieldValues, PathValue, useController } from "react-hook-form";
 import { Input, InputProps } from "./input";
 
-export type FormInputProps<T extends z.Schema> = {
-  phoneInput?: false;
-  className?: string;
-  classNameOnError?: string;
-} & InputProps &
-  UseControllerProps<z.infer<T>, Path<z.infer<T>>>;
+export type FormInputProps<
+  TFieldValues extends FieldValues,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+> = Omit<InputProps, "defaultValue" | "onBlur" | "onChange" | "value"> & {
+  control: Control<TFieldValues>;
+  defaultValue?: PathValue<TFieldValues, TPath>;
+  name: TPath;
+};
 
-type FormInputComponentProps<T extends z.Schema> = {
-  children?: ReactNode;
-} & Omit<FormInputProps<z.infer<T>>, "children">;
+export const FormInput = <
+  TFieldValues extends FieldValues,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+>({
+  control,
+  defaultValue,
+  name,
+  ...props
+}: FormInputProps<TFieldValues, TPath>): ReactElement | null => {
+  const { field, fieldState } = useController({
+    control,
+    defaultValue,
+    name,
+  });
 
-export const FormInput = forwardRef(
-  <T extends z.Schema>(
-    {
-      children,
-      className,
-      classNameOnError = "border-red-800 focus:border-red-800 hover:border-red-800",
-      ...props
-    }: FormInputComponentProps<T>,
-    ref: ForwardedRef<HTMLInputElement>,
-  ) => {
-    const { field, fieldState } = useController<z.infer<T>>(props);
-    return (
-      <Input {...field} className={cn(fieldState.error && classNameOnError, className)} {...props} ref={ref}>
-        {children}
-      </Input>
-    );
-  },
-);
+  return (
+    <Input
+      {...props}
+      {...field}
+      error={fieldState.isTouched && (fieldState.error?.message ?? fieldState.error?.type)}
+    />
+  );
+};

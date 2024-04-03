@@ -1,49 +1,56 @@
 "use client";
-import {
-  ChangeEvent,
-  DetailedHTMLProps,
-  InputHTMLAttributes,
-  ReactNode,
-  forwardRef,
-  useCallback,
-  useState,
-} from "react";
+import { InputHTMLAttributes, forwardRef } from "react";
 import { cn } from "../../utils/client";
+import { FormError } from "../form-error";
 
 export enum InputStyleTypes {
   MAIN = "w-full text-white-1000 outline-none rounded-[4px] px-2 py-1 bg-black-600 border-black-150 border-[1px] transition-transform hover:border-white-1000 focus:border-white-1000 focus:border-2",
   NONE = "",
 }
 
-export type InputProps = {
-  children?: ReactNode;
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  containerClassName?: string;
+  error?: false | string;
+  label?: string;
+  labelClassName?: string;
+  errorMessage?: boolean;
+  errorInputClassName?: string;
   styleType?: keyof typeof InputStyleTypes;
-  inputWrapperClassName?: string;
-  className?: string;
-} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+};
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ children, className, inputWrapperClassName, styleType, value, onChange, ...props }, ref) => {
-    const [inputValue, setInputValue] = useState("");
-
-    const onChangeHandler = useCallback(
-      (e: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
-        onChange?.(e);
-      },
-      [onChange, setInputValue],
-    );
+  (
+    {
+      className,
+      containerClassName,
+      error,
+      labelClassName = "text-base font-semibold",
+      label,
+      styleType,
+      type,
+      errorInputClassName = "border-red-800 focus:border-red-800 hover:border-red-800",
+      errorMessage = true,
+      ...props
+    },
+    ref,
+  ) => {
     return (
-      <div className={cn("relative flex h-fit w-full items-start gap-2", inputWrapperClassName)}>
+      <div className={cn("max-w-full", containerClassName)}>
+        {!!label && <span className={labelClassName}>{label}</span>}
         <input
-          className={cn(styleType && InputStyleTypes[styleType], "h-full w-full", className)}
-          {...props}
-          value={value || inputValue}
-          onChange={onChangeHandler}
+          className={cn(
+            "w-full border-green-700 text-white-1000 outline-none rounded-[4px] px-2 py-1 bg-black-600 border-[1px] transition-transform hover:border-white-1000 focus:border-white-1000 focus:border-2",
+            InputStyleTypes[styleType],
+            error && "border-red-800",
+            className,
+          )}
           ref={ref}
+          type={type}
+          {...props}
         />
-        {children}
+        {errorMessage && <FormError className="w-full text-end" errorText={error} />}
       </div>
     );
   },
 );
+Input.displayName = "Input";

@@ -1,16 +1,17 @@
 "use client";
 import { Routes } from "@/shared";
 import { ApiResponse } from "@/shared/utils/server";
-import { STATUS_CODES } from "@shared";
-import { Button, FormInput, Link } from "@web-shared/components";
+import { STATUS_CODES } from "@shared/api";
+import { Button, FormInput } from "@web-shared/components";
 import { useCustomForm, useToast } from "@web-shared/hooks";
 import { ShownIcon, UnShownIcon } from "@web-shared/icons";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import { LoginUserType, loginUserSchema } from "./schema";
 
 type LoginProps = {
-  onSubmit: (args: LoginUserType) => Promise<ApiResponse<"auth", "loginUser">>;
+  onSubmit: (args: LoginUserType) => Promise<ApiResponse<"auth", "login">>;
 };
 
 export const Login: FC<LoginProps> = ({ onSubmit }) => {

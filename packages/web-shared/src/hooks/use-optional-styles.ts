@@ -1,16 +1,13 @@
 "use client";
-import { useState, useCallback, useMemo } from "react";
-import { cn } from "../utils";
+import { useCallback, useMemo, useState } from "react";
+import { cn } from "../utils/client";
 
 export enum AnimationsTimingKeys {
   SHORT = "short",
   MEDIUM = "medium",
   LONG = "long",
 }
-export const animationsTimings: Record<
-  AnimationsTimingKeys,
-  { className: string; ms: number }
-> = {
+export const animationsTimings: Record<AnimationsTimingKeys, { className: string; ms: number }> = {
   [AnimationsTimingKeys.SHORT]: {
     className: "duration-[200ms]",
     ms: 200,
@@ -27,10 +24,8 @@ export const animationsTimings: Record<
 
 export const animations = {
   opacity: (isOpen: boolean) => (isOpen ? "animate-opacity" : "opacity-0"),
-  mainPage: (isOpen: boolean) =>
-    isOpen ? "animate-mainTransition" : "translate-y-full bg-[#fff]",
-  secondaryPage: (isOpen: boolean) =>
-    isOpen ? "animate-secondaryTransition" : "translate-x-full",
+  mainPage: (isOpen: boolean) => (isOpen ? "animate-mainTransition" : "translate-y-full bg-[#fff]"),
+  secondaryPage: (isOpen: boolean) => (isOpen ? "animate-secondaryTransition" : "translate-x-full"),
   shake: (isOpen: boolean) => (isOpen ? "" : "animate-shake"),
 };
 
@@ -42,13 +37,7 @@ type UseOptionalStyleProps = {
   onDisable?: () => void;
 };
 
-export const useOptionalStyle = ({
-  timing,
-  initialIsEnabled,
-  style,
-  onEnable,
-  onDisable,
-}: UseOptionalStyleProps) => {
+export const useOptionalStyle = ({ timing, initialIsEnabled, style, onEnable, onDisable }: UseOptionalStyleProps) => {
   const [isEnabled, setIsEnabled] = useState(initialIsEnabled ?? true);
 
   const disableStyle = useCallback(() => {
@@ -72,11 +61,7 @@ export const useOptionalStyle = ({
   }, [disableStyle, enableStyle, timing]);
 
   const className = useMemo(
-    () =>
-      cn(
-        style(isEnabled),
-        animationsTimings[AnimationsTimingKeys[timing]].className,
-      ),
+    () => cn(style(isEnabled), animationsTimings[AnimationsTimingKeys[timing]].className),
     [timing, isEnabled, style],
   );
 

@@ -1,4 +1,4 @@
-import { userSchema } from "@db";
+import { userSchema } from "@db/schemas";
 import { z } from "zod";
 import { NotFoundErrorSchema, UnauthorizedErrorSchema } from "../../utils";
 import { STATUS_CODES } from "../constants";

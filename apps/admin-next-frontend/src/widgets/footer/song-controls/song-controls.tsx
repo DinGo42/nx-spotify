@@ -1,6 +1,6 @@
 "use client";
-import { ShuffleIcon, NextSongIcon, PauseIcon, PlayIcon, RepeatIcon } from "@web-shared/icons";
 import { Button, Slider } from "@web-shared/components";
+import { NextSongIcon, PauseIcon, PlayIcon, RepeatIcon, ShuffleIcon } from "@web-shared/icons";
 import { FC, useState } from "react";
 
 export const SongControls: FC = () => {

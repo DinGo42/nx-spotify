@@ -1,16 +1,16 @@
 "use client";
-import { useCustomForm, useToast } from "@web-shared/hooks";
-import { FC, useCallback, useState } from "react";
-import { FirstStep } from "./first-step";
-import { SecondStep } from "./second-step";
-import { ThirdStep } from "./third-step";
-import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
-import { ProgressBar } from "./progress-bar";
-import { CreateUserType, signUpSchema } from "./schema";
-import { useRouter } from "next/navigation";
 import { Routes } from "@/shared";
 import { ApiResponse } from "@/shared/utils/server";
-import { STATUS_CODES } from "@shared";
+import { STATUS_CODES } from "@shared/api";
+import { useCustomForm, useToast } from "@web-shared/hooks";
+import { useRouter } from "next/navigation";
+import { FC, useCallback, useState } from "react";
+import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { FirstStep } from "./first-step";
+import { ProgressBar } from "./progress-bar";
+import { CreateUserType, signUpSchema } from "./schema";
+import { SecondStep } from "./second-step";
+import { ThirdStep } from "./third-step";
 
 export type SignUpChildFormProps = {
   setValueToParentForm: UseFormSetValue<CreateUserType>;
@@ -39,7 +39,7 @@ export const signUpFormSteps = [
 ];
 
 type SignUpProps = {
-  onSubmit: (args: CreateUserType) => Promise<ApiResponse<"auth", "createUser">>;
+  onSubmit: (args: CreateUserType) => Promise<ApiResponse<"auth", "signup">>;
 };
 
 export const SignUp: FC<SignUpProps> = ({ onSubmit }) => {
@@ -72,7 +72,7 @@ export const SignUp: FC<SignUpProps> = ({ onSubmit }) => {
     if (nextStep > Object.keys(signUpFormSteps).length) return;
 
     setStep(nextStep);
-  }, [currentStep, handleSubmit, onSubmit]);
+  }, [currentStep, handleSubmit, onSubmit, push, toast]);
 
   const prevStep = useCallback(() => {
     const prevStep = currentStep - 1;

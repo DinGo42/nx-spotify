@@ -1,6 +1,6 @@
-import { cookies } from "next/headers";
+import { userApiContract } from "@shared/api";
 import { ServerInferResponses, initClient } from "@ts-rest/core";
-import { userApiContract } from "@shared";
+import { cookies } from "next/headers";
 
 type ApiResponseShapes = ServerInferResponses<typeof userApiContract>;
 

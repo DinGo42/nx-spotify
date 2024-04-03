@@ -8,23 +8,18 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "target": "es2022",
     "module": "esnext",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "target": "ESNext",
-    "jsx": "preserve",
-    "allowJs": true,
-    "strict": true,
-    "noEmit": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": true,
+    "baseUrl": ".",
     "paths": {
-      "@db": ["packages/db/src/index.ts"],
-      "@shared/*": ["packages/shared/src/*"]
+      "@db/*": ["packages/db/src/*"],
+      "@shared/*": ["packages/shared/src/*"],
+      "@tailwind": ["packages/tailwind/src/index.ts"],
+      "@tailwind/styles": ["packages/tailwind/src/global.css"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,8 +1,9 @@
+import "@tailwind/styles";
 import type { Metadata } from "next";
 
+import { AppWrapper, Toaster } from "@web-shared/components";
 import { Cairo } from "next/font/google";
 import "./global.css";
-import { AppWrapper, Toaster } from "@web-shared/components";
 
 const сairo = Cairo({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={сairo.className}>
+        {/* <div className="flex h-screen bg-green-800 w-full flex-col">{children}</div> */}
         <AppWrapper>{children}</AppWrapper>
         <Toaster />
       </body>

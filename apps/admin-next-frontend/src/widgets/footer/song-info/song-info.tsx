@@ -1,9 +1,9 @@
 "use client";
-import { HeartIcon } from "@web-shared/icons";
 import { Button, Link } from "@web-shared/components";
+import { animations, useOptionalStyle } from "@web-shared/hooks";
+import { HeartIcon } from "@web-shared/icons";
+import { cn } from "@web-shared/utils/client";
 import { FC, useState } from "react";
-import { useOptionalStyle, animations } from "@web-shared/hooks";
-import { cn } from "@web-shared/utils";
 
 export const SongInfo: FC = () => {
   const [liked, setLike] = useState(false);

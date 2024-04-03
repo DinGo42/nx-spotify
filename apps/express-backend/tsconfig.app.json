@@ -5,7 +5,7 @@
     "module": "commonjs",
     "types": ["node", "express"],
     "paths": {
-      "@db": ["packages/db/src/index.ts"],
+      "@db/*": ["packages/db/src/*"],
       "@shared/*": ["packages/shared/src/*"]
     }
   },

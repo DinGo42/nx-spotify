@@ -3,6 +3,56 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/next-frontend",
   "projectType": "application",
-  "targets": {},
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/next-frontend",
+        "postcssConfig": "apps/next-frontend/postcss.config.ts",
+        "tsConfig": "apps/next-frontend/tsconfig.spec.json"
+      },
+      "dependsOn": [
+        {
+          "projects": ["tailwind"],
+          "target": "build"
+        }
+      ],
+      "configurations": {
+        "development": {
+          "outputPath": "apps/next-frontend"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "dependsOn": [
+        {
+          "projects": ["tailwind"],
+          "target": "build"
+        }
+      ],
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "next-frontend:build",
+        "dev": true,
+        "port": 3000
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "next-frontend:build:development",
+          "dev": true,
+          "port": 3000
+        },
+        "production": {
+          "buildTarget": "next-frontend:build:production",
+          "dev": false,
+          "port": 3000
+        }
+      }
+    }
+  },
   "tags": []
 }

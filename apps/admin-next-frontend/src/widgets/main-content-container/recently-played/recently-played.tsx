@@ -1,9 +1,9 @@
 "use client";
-import { FC, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { Button, Image } from "@web-shared/components";
 import { PauseIcon, PlayIcon } from "@web-shared/icons";
-import { cn } from "@web-shared/utils";
+import { cn } from "@web-shared/utils/client";
+import { FC, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export enum RecentlyPlayedTypes {
   USER_PLAYLIST = "grid grid-cols-2",

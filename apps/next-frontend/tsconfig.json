@@ -20,9 +20,11 @@
     "paths": {
       "@/*": ["apps/next-frontend/src/*"],
       "@/icons": ["apps/next-frontend/public/svg"],
-      "@db": ["packages/db/src/index.ts"],
+      "@db/*": ["packages/db/src/*"],
       "@shared/*": ["packages/shared/src/*"],
-      "@web-shared/*": ["packages/web-shared/src/*"]
+      "@web-shared/*": ["packages/web-shared/src/*"],
+      "@tailwind": ["packages/tailwind/src/index.ts"],
+      "@tailwind/styles": ["packages/tailwind/src/global.css"]
     }
   },
   "include": [

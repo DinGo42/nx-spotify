@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import { Image } from "@web-shared/components";
+import { cn } from "@web-shared/utils/client";
 import { FC } from "react";
-import { cn } from "@web-shared/utils";
+import { v4 as uuidv4 } from "uuid";
 
 export enum SideBarItemTypes {
   ARTIST = "rounded-full",

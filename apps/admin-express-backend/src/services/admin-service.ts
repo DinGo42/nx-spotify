@@ -1,6 +1,4 @@
-import { PrismaClient } from "@db";
-import { NotFoundError } from "@shared";
-
+import { NotFoundError } from "@shared/api";
 const prisma = new PrismaClient();
 
 export const adminService = () => {

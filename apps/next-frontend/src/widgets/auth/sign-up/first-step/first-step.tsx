@@ -1,11 +1,12 @@
 "use client";
-import { Button, FormInput, Link } from "@web-shared/components";
-import { SignUpChildFormProps } from "../sign-up";
-import z from "zod";
-import { memo, useCallback } from "react";
 import { Routes } from "@/shared";
-import { signUpSchema } from "../schema";
+import { Button, FormInput } from "@web-shared/components";
 import { useCustomForm } from "@web-shared/hooks";
+import Link from "next/link";
+import { memo, useCallback } from "react";
+import z from "zod";
+import { signUpSchema } from "../schema";
+import { SignUpChildFormProps } from "../sign-up";
 
 const firstStepSchema = signUpSchema.pick({ email: true });
 
@@ -35,16 +36,13 @@ export const FirstStep = memo(
 
           <div className="flex gap-4">
             <FormInput
-              inputWrapperClassName="w-full flex-col-reverse"
-              rules={{ required: true }}
+              label="Email address"
               styleType={"MAIN"}
               placeholder="example@gmail.com"
-              className="h-12"
               control={control}
+              errorMessage={false}
               name="email"
-            >
-              <span className="text-base font-semibold">Email address</span>
-            </FormInput>
+            />
           </div>
           <Button
             form="FormFirstStep"

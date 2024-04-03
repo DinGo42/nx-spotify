@@ -1,11 +1,11 @@
-import express, { json, urlencoded } from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import { adminRouter, authRouter } from "./routes";
+import { errorMiddleware } from "@shared/api";
 import { createExpressEndpoints } from "@ts-rest/express";
-import { authContract, errorMiddleware } from "@shared";
-import { adminContract } from "./contracts";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import express, { json, urlencoded } from "express";
+import { authContract } from "./contracts";
+import { adminRouter, authRouter } from "./routes";
 
 dotenv.config();
 

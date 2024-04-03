@@ -1,11 +1,11 @@
 "use client";
 
 import { Button, Slider } from "@web-shared/components";
-import { MinVolumeIcon, MidVolumeIcon, MaxVolumeIcon } from "@web-shared/icons";
+import { MaxVolumeIcon, MidVolumeIcon, MinVolumeIcon } from "@web-shared/icons";
 import { FC, useState } from "react";
 
 export const SoundSlider: FC = () => {
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState(50);
   const [muted, setMute] = useState(false);
   return (
     <div className="flex items-center gap-2">

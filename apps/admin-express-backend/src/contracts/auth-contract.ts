@@ -1,6 +1,6 @@
+import { NotFoundErrorSchema, STATUS_CODES, UnauthorizedErrorSchema } from "@shared";
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { NotFoundErrorSchema, STATUS_CODES, UnauthorizedErrorSchema } from "@shared";
 
 const c = initContract();
 
@@ -18,7 +18,7 @@ const userDTOSchema = z.object({
 
 export const authContract = c.router(
   {
-    loginUser: {
+    login: {
       method: "POST",
       path: "/login",
       responses: {
@@ -28,7 +28,7 @@ export const authContract = c.router(
       },
       body: LoginSchema,
     },
-    logoutUser: {
+    logout: {
       method: "GET",
       path: `/logout`,
       responses: {

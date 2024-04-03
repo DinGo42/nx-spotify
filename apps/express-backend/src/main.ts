@@ -1,15 +1,12 @@
-import express, { json } from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import { errorMiddleware, userApiContract } from "@shared/api";
 import { createExpressEndpoints } from "@ts-rest/express";
-import { errorMiddleware, tokenService, userApiContract } from "@shared";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import express, { json } from "express";
 import { router } from "./routes";
 
 dotenv.config();
-
-export const { generateToken, deleteTokens, refreshTokens, saveTokens, decodeToken, checkTokens } =
-  tokenService<string>();
 
 const port = process.env.PORT || 3333;
 

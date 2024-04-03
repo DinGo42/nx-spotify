@@ -5,5 +5,7 @@ declare namespace NodeJS {
     DATABASE_URL: string;
     JWT_REFRESH_SECRET_KEY: string;
     JWT_ACCESS_SECRET_KEY: string;
+    JWT_REFRESH_TOKEN_MAX_TIME: number;
+    JWT_ACCESS_TOKEN_MAX_TIME: number;
   }
 }

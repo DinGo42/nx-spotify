@@ -12,15 +12,15 @@ const Colors = {
   WHITE_1000: "white-1000",
   WHITE_800: "white-800",
   GREEN_800: "green-800",
+  GREEN_700: "green-700",
+  RED_800: "red-800",
+  RED_600: "red-600",
 };
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    join(
-      __dirname,
-      "{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}",
-    ),
+    join(__dirname, "{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}"),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
@@ -34,8 +34,24 @@ module.exports = {
       [Colors.WHITE_1000]: "#ffffff",
       [Colors.WHITE_800]: "#f0f0f0",
       [Colors.GREEN_800]: "#1cc658",
+      [Colors.GREEN_700]: "#1fdf64",
+      [Colors.RED_800]: "#e91429",
+      [Colors.RED_600]: "#b94a55",
     },
     keyframes: {
+      hide: {
+        from: { opacity: "1" },
+        to: { opacity: "0" },
+      },
+      slideIn: {
+        from: { transform: "translateX(calc(100% + var(--viewport-padding)))" },
+        to: { transform: "translateX(0)" },
+      },
+      swipeOut: {
+        from: { transform: "translateX(var(--radix-toast-swipe-end-x))" },
+        to: { transform: "translateX(calc(100% + var(--viewport-padding)))" },
+      },
+
       shake: {
         "10%, 90%": {
           transform: "translateX(-1px)",
@@ -53,8 +69,11 @@ module.exports = {
       },
     },
     animation: {
+      hide: "hide 100ms ease-in",
+      slideIn: "slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+      swipeOut: "swipeOut 100ms ease-out",
       shake: "shake 700ms cubic-bezier(.36,.07,.19,.97) both",
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

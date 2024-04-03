@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "devFront": "pnpm nx dev next-frontend",
-    "devAdminFront": "pnpm nx dev admin-next-frontend -p 3001",
+    "devFront": "pnpm nx serve next-frontend",
+    "devAdminFront": "pnpm nx serve admin-next-frontend -p 3001",
     "devBack": "pnpm nx serve express-backend",
     "devAdminBack": "pnpm nx serve admin-express-backend",
     "prisma:generate": "pnpx prisma generate --schema=./packages/db/src/prisma/schema.prisma",
@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
-    "@prisma/client": "5.11.0",
+    "@prisma/client": "^5.11.0",
     "@radix-ui/react-slider": "^1.1.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@tanstack/react-query": "^5.28.0",

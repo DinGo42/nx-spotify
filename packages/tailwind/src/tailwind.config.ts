@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-const { createGlobPatternsForDependencies } = require("@nx/next/tailwind");
-const { join } = require("path");
+import type { Config as TailwindConfig } from "tailwindcss";
 
 const Colors = {
   BLACK_1000: "black-1000",
@@ -17,12 +15,8 @@ const Colors = {
   RED_600: "red-600",
 };
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    join(__dirname, "{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}"),
-    ...createGlobPatternsForDependencies(__dirname),
-  ],
+export const defaultConfig = {
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./assets/**/*.svg"],
   theme: {
     colors: {
       [Colors.BLACK_1000]: "#000000",
@@ -76,4 +70,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+} satisfies TailwindConfig;

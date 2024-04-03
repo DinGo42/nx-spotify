@@ -1,5 +1,5 @@
 "use client";
-import { PasswordErrorMessages } from "@shared";
+import { PasswordErrorMessages } from "@db/validation";
 import { Button, FormInput } from "@web-shared/components";
 import { useCustomForm } from "@web-shared/hooks";
 import { ArrowIcon, ShownIcon, UnShownIcon } from "@web-shared/icons";
