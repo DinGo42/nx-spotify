@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx", "@typescript-eslint", "prettier", "naming-convention", "unicorn"],
+  "plugins": ["@nx", "@typescript-eslint", "prettier", "naming-convention", "unicorn", "perfectionist"],
+  "extends": ["plugin:perfectionist/recommended-natural"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

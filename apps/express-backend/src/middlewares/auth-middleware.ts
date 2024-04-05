@@ -2,9 +2,10 @@ import { UnauthorizedError } from "@shared/utils";
 import { AppRoute, AppRouter } from "@ts-rest/core";
 import { TsRestRequest } from "@ts-rest/express";
 import { NextFunction, Response } from "express";
+
 import { refreshTokens, saveTokens } from "../modules";
 
-export const authMiddleware = <T extends AppRouter | AppRoute>(
+export const authMiddleware = <T extends AppRoute | AppRouter>(
   req: TsRestRequest<T>,
   res: Response,
   next: NextFunction,
@@ -24,10 +25,10 @@ export const authMiddleware = <T extends AppRouter | AppRoute>(
   const { accessToken: newAccessToken, refreshToken: newRefreshToken } = newTokens;
 
   saveTokens({
-    res,
-    req,
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,
+    req,
+    res,
   });
 
   next();

@@ -1,4 +1,5 @@
-import { HomeIcon, SearchIcon, LibraryIcon } from "@web-shared/icons";
+import { HomeIcon, LibraryIcon, SearchIcon } from "@web-shared/icons";
+
 import { SideBarItem } from "./item";
 
 export const SideBar = () => (
@@ -14,66 +15,66 @@ export const SideBar = () => (
       <div className="h-full w-full overflow-y-auto pb-4">
         <div className="flex h-fit w-full flex-col items-center gap-1">
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
           <SideBarItem
-            type={"USER_PLAYLIST"}
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"USER_PLAYLIST"}
           />
-          <SideBarItem type={"USER_PLAYLIST"} className="bg-green-800" cover={[""]} />
+          <SideBarItem className="bg-green-800" cover={[""]} type={"USER_PLAYLIST"} />
         </div>
       </div>
     </div>

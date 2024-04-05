@@ -28,12 +28,12 @@ export const generateToken = (payload: string) => {
     },
   );
   return {
-    refreshToken,
     accessToken,
+    refreshToken,
   };
 };
 
-export const decodeToken = (token: string | null) => {
+export const decodeToken = (token: null | string) => {
   return jwt.decode(token ?? "", {
     complete: true,
     //@ts-expect-error it`s work as i expected value from object or null cos string don`t have any keys
@@ -44,8 +44,8 @@ export const checkTokens = ({
   accessToken,
   refreshToken,
 }: {
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: null | string;
+  refreshToken: null | string;
 }) => {
   const accessTokenCheck = decodeToken(accessToken);
 
@@ -62,8 +62,8 @@ export const refreshTokens = ({
   accessToken,
   refreshToken,
 }: {
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: null | string;
+  refreshToken: null | string;
 }) => {
   const checkResult = checkTokens({
     accessToken,
@@ -80,13 +80,13 @@ export const refreshTokens = ({
 export const saveTokens = ({
   accessToken,
   refreshToken,
-  res,
   req,
+  res,
 }: {
-  res: Response;
-  req: Request;
   accessToken: string;
   refreshToken: string;
+  req: Request;
+  res: Response;
 }) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,

@@ -1,18 +1,19 @@
+import { Image } from "@web-shared/components";
 import { FC } from "react";
+
 import { Header } from "./header";
 import { RecentlyPlayed } from "./recently-played";
-import { Image } from "@web-shared/components";
 
 export const Mixes: FC = () => (
   <div className="flex h-fit w-fit grow flex-col rounded-[10px] bg-[#191919] p-4 transition-colors hover:bg-[#282828]">
     <div className="min-w-[80px] max-w-[300px] bg-green-800">
       <Image
-        src={"/selyavi.jpg"}
         alt=""
-        width={100}
-        height={100}
-        style={{ width: "100%", height: "100%" }}
         className="mb-3 grow rounded-md"
+        height={100}
+        src={"/selyavi.jpg"}
+        style={{ height: "100%", width: "100%" }}
+        width={100}
       />
     </div>
     <div className="h-fit w-full min-w-40 max-w-64 grow bg-green-800" />
@@ -29,34 +30,34 @@ export const MainContentContainer: FC = () => (
         <span className="text-4xl font-bold">Good afternoon</span>
         <div className="flex h-fit w-full flex-wrap gap-5 xl:grid xl:grid-cols-3">
           <RecentlyPlayed
-            type={"COMMUNITY_PLAYLIST"}
+            cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
             title="OBLADAET"
-            cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            type={"COMMUNITY_PLAYLIST"}
           />
           <RecentlyPlayed
+            cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            title="Liked Songs"
             type={"USER_PLAYLIST"}
-            title="Liked Songs"
-            cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
           />
           <RecentlyPlayed
-            type={"COMMUNITY_PLAYLIST"}
-            title="Liked Songs"
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            title="Liked Songs"
+            type={"COMMUNITY_PLAYLIST"}
           />
           <RecentlyPlayed
-            type={"COMMUNITY_PLAYLIST"}
-            title="Liked Songs"
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            title="Liked Songs"
+            type={"COMMUNITY_PLAYLIST"}
           />
           <RecentlyPlayed
-            type={"COMMUNITY_PLAYLIST"}
-            title="Liked Songs"
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            title="Liked Songs"
+            type={"COMMUNITY_PLAYLIST"}
           />
           <RecentlyPlayed
-            type={"COMMUNITY_PLAYLIST"}
-            title="Liked Songs"
             cover={["/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg", "/selyavi.jpg"]}
+            title="Liked Songs"
+            type={"COMMUNITY_PLAYLIST"}
           />
         </div>
         <span className="text-2xl font-bold">Made for Иван Нестеренко</span>

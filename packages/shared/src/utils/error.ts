@@ -1,57 +1,49 @@
-import z from "zod";
-import { StatusCodes, STATUS_CODES } from "../api";
+import { z } from "zod";
+
+import { STATUS_CODES, StatusCodes } from "../api";
 
 interface ApiErrorProps extends Error {
   statusCode: StatusCodes;
 }
 
-export const ApiErrorConstructorSchema = <
-  TName extends string,
-  TStatus extends StatusCodes,
->(
+export const ApiErrorConstructorSchema = <TName extends string, TStatus extends StatusCodes>(
   code: TStatus,
   name: TName,
 ) =>
   z.object({
     message: z.string(),
-    stack: z.string().optional(),
     name: z.literal(name),
+    stack: z.string().optional(),
     statusCode: z.literal(code),
   });
 
 export abstract class ApiError extends Error {
   statusCode: StatusCodes;
-  abstract zodSchema: ReturnType<typeof ApiErrorConstructorSchema>;
-
-  static createZodSchema<TName extends string, TStatus extends StatusCodes>(
-    code: TStatus,
-    name: TName,
-  ) {
-    return z.object({
-      message: z.string(),
-      stack: z.string().optional(),
-      name: z.literal(name),
-      statusCode: z.literal(code),
-    });
-  }
-  constructor({ message, statusCode, name }: ApiErrorProps) {
+  constructor({ message, name, statusCode }: ApiErrorProps) {
     super(message);
     this.statusCode = statusCode;
     this.name = name;
   }
+
+  static createZodSchema<TName extends string, TStatus extends StatusCodes>(code: TStatus, name: TName) {
+    return z.object({
+      message: z.string(),
+      name: z.literal(name),
+      stack: z.string().optional(),
+      statusCode: z.literal(code),
+    });
+  }
+  abstract zodSchema: ReturnType<typeof ApiErrorConstructorSchema>;
 }
 
 export class UnauthorizedError extends ApiError {
-  zodSchema = ApiError.createZodSchema(
-    STATUS_CODES.UNAUTHORIZED,
-    "Unauthorized",
-  );
+  zodSchema = ApiError.createZodSchema(STATUS_CODES.UNAUTHORIZED, "Unauthorized");
 
   constructor(message: string) {
     super({
       message,
-      statusCode: STATUS_CODES.UNAUTHORIZED,
       name: "Unauthorized",
+      statusCode: STATUS_CODES.UNAUTHORIZED,
     });
   }
 }
@@ -61,50 +53,41 @@ export class NotFoundError extends ApiError {
   constructor(message: string) {
     super({
       message,
-      statusCode: STATUS_CODES.NOT_FOUND,
       name: "NotFoundError",
+      statusCode: STATUS_CODES.NOT_FOUND,
     });
   }
 }
 
 export class ServerError extends ApiError {
-  zodSchema = ApiError.createZodSchema(
-    STATUS_CODES.SERVER_ERROR,
-    "InternalServerError",
-  );
+  zodSchema = ApiError.createZodSchema(STATUS_CODES.SERVER_ERROR, "InternalServerError");
   constructor(message: string) {
     super({
       message,
-      statusCode: STATUS_CODES.SERVER_ERROR,
       name: "InternalServerError",
+      statusCode: STATUS_CODES.SERVER_ERROR,
     });
   }
 }
 
 export class ValidationError extends ApiError {
-  zodSchema = ApiError.createZodSchema(
-    STATUS_CODES.CONFLICT,
-    "ValidationError",
-  );
+  zodSchema = ApiError.createZodSchema(STATUS_CODES.CONFLICT, "ValidationError");
   constructor(message: string) {
     super({
       message,
-      statusCode: STATUS_CODES.CONFLICT,
       name: "ValidationError",
+      statusCode: STATUS_CODES.CONFLICT,
     });
   }
 }
 
 export class ForbiddenError extends ApiError {
-  zodSchema = ApiError.createZodSchema(
-    STATUS_CODES.FORBIDDEN,
-    "ForbiddenError",
-  );
+  zodSchema = ApiError.createZodSchema(STATUS_CODES.FORBIDDEN, "ForbiddenError");
   constructor(message: string) {
     super({
       message,
-      statusCode: STATUS_CODES.FORBIDDEN,
       name: "ForbiddenError",
+      statusCode: STATUS_CODES.FORBIDDEN,
     });
   }
 }

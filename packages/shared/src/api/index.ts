@@ -1,4 +1,4 @@
 export * from "./constants";
 export * from "./contracts";
 export * from "./middlewares";
-export * from "./services";
+export * from "./schemas";

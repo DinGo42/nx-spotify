@@ -5,6 +5,7 @@ import { useCustomForm } from "@web-shared/hooks";
 import Link from "next/link";
 import { memo, useCallback } from "react";
 import z from "zod";
+
 import { signUpSchema } from "../schema";
 import { SignUpChildFormProps } from "../sign-up";
 
@@ -15,10 +16,10 @@ type FirstStepSchema = z.infer<typeof firstStepSchema>;
 export const FirstStep = memo(
   ({ getValuesFromParentForm, nextFormStep, setValueToParentForm }: SignUpChildFormProps) => {
     const { control, handleSubmit } = useCustomForm({
-      schema: firstStepSchema,
       defaultValues: {
         email: getValuesFromParentForm("email"),
       },
+      schema: firstStepSchema,
     });
 
     const onSubmit = useCallback(
@@ -31,22 +32,22 @@ export const FirstStep = memo(
 
     return (
       <>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex h-full w-[330px] flex-col gap-5" id="FormFirstStep">
+        <form className="flex h-full w-[330px] flex-col gap-5" id="FormFirstStep" onSubmit={handleSubmit(onSubmit)}>
           <span className="mb-10 text-5xl font-semibold">Sign up to start listening</span>
 
           <div className="flex gap-4">
             <FormInput
-              label="Email address"
-              styleType={"MAIN"}
-              placeholder="example@gmail.com"
               control={control}
               errorMessage={false}
+              label="Email address"
               name="email"
+              placeholder="example@gmail.com"
+              styleType={"MAIN"}
             />
           </div>
           <Button
-            form="FormFirstStep"
             className="text-black-1000 bg-green-800 p-3 text-lg font-bold hover:bg-green-700"
+            form="FormFirstStep"
             styleType={"MAIN_ROUND"}
           >
             Next

@@ -1,23 +1,24 @@
 import { ForbiddenError, NotFoundError, UnauthorizedError } from "@shared/utils";
 import argon2 from "argon2";
+
 import { prisma } from "../prisma";
 import { generateToken } from "../token";
 
 export const signupService = async ({
   email,
-  password,
   nickname,
+  password,
 }: {
   email: string;
-  password: string;
   nickname: string;
+  password: string;
 }) => {
   const emailCheck = await prisma.user.findUnique({
-    where: {
-      email,
-    },
     select: {
       password: true,
+    },
+    where: {
+      email,
     },
   });
 
@@ -28,8 +29,8 @@ export const signupService = async ({
   const { id } = await prisma.user.create({
     data: {
       email,
-      password: hashedPassword,
       nickname: nickname,
+      password: hashedPassword,
     },
     select: {
       id: true,
@@ -40,7 +41,7 @@ export const signupService = async ({
 
   return tokens;
 };
-export const loginService = async ({ password, email }: { email: string; password: string }) => {
+export const loginService = async ({ email, password }: { email: string; password: string }) => {
   const user = await prisma.user.findUnique({
     where: {
       email,
@@ -49,7 +50,7 @@ export const loginService = async ({ password, email }: { email: string; passwor
 
   if (!user) throw new NotFoundError(`User with email:${email} not found`);
 
-  const { password: hashedPassword, id } = user;
+  const { id, password: hashedPassword } = user;
 
   if (!(await argon2.verify(hashedPassword, password))) throw new UnauthorizedError(`Password doesn't match`);
 

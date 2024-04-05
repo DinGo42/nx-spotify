@@ -6,13 +6,13 @@ import { FC, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export enum RecentlyPlayedTypes {
-  USER_PLAYLIST = "grid grid-cols-2",
   COMMUNITY_PLAYLIST = "",
+  USER_PLAYLIST = "grid grid-cols-2",
 }
 
 type RecentlyPlayedProps = {
-  title: string;
   cover: string[];
+  title: string;
   type?: keyof typeof RecentlyPlayedTypes;
 };
 
@@ -24,24 +24,24 @@ export const RecentlyPlayed: FC<RecentlyPlayedProps> = ({ cover, title, type = "
         <div className={cn("bg-white-800 size-20", RecentlyPlayedTypes[type])}>
           {cover.map((src) => (
             <Image
+              alt={""}
+              className="h-full w-full"
+              height={100}
               key={uuidv4()}
               src={src}
-              alt={""}
+              style={{ height: "100%", width: "100%" }}
               width={100}
-              height={100}
-              className="h-full w-full"
-              style={{ width: "100%", height: "100%" }}
             />
           ))}
         </div>
         <span className="text-md w-[120px] overflow-hidden text-ellipsis font-bold">{title}</span>
       </div>
       <Button
-        onClick={() => setPlayed((prev) => !prev)}
         className={cn(
           "absolute right-5 flex size-12 items-center justify-center rounded-full bg-green-800 transition-transform hover:scale-105 group-hover:flex",
           !played && "hidden",
         )}
+        onClick={() => setPlayed((prev) => !prev)}
       >
         {played ? <PauseIcon /> : <PlayIcon />}
       </Button>

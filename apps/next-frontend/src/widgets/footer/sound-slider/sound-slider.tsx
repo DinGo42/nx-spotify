@@ -18,15 +18,15 @@ export const SoundSlider: FC = () => {
         )}
       </Button>
       <Slider
-        value={muted ? [0] : [volume]}
         className="mb-[1px] min-w-20 max-w-24"
+        defaultValue={[volume]}
+        max={100}
         onValueChange={(value) => {
           setVolume(value[0]);
           setMute(false);
         }}
-        defaultValue={[volume]}
-        max={100}
         step={1}
+        value={muted ? [0] : [volume]}
       />
     </div>
   );

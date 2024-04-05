@@ -18,7 +18,14 @@
           "buildTarget": "express-backend:build:production"
         }
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/next-frontend/**/*.{ts,tsx,js,jsx}"]
+      },
+      "tags": []
     }
-  },
-  "tags": []
+  }
 }

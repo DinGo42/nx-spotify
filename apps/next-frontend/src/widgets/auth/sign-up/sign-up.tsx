@@ -6,6 +6,7 @@ import { useCustomForm, useToast } from "@web-shared/hooks";
 import { useRouter } from "next/navigation";
 import { FC, useCallback, useState } from "react";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+
 import { FirstStep } from "./first-step";
 import { ProgressBar } from "./progress-bar";
 import { CreateUserType, signUpSchema } from "./schema";
@@ -13,11 +14,11 @@ import { SecondStep } from "./second-step";
 import { ThirdStep } from "./third-step";
 
 export type SignUpChildFormProps = {
-  setValueToParentForm: UseFormSetValue<CreateUserType>;
+  currentStep: number;
   getValuesFromParentForm: UseFormGetValues<CreateUserType>;
   nextFormStep: () => void;
   prevFormStep: () => void;
-  currentStep: number;
+  setValueToParentForm: UseFormSetValue<CreateUserType>;
 };
 
 export const signUpFormSteps = [
@@ -47,7 +48,7 @@ export const SignUp: FC<SignUpProps> = ({ onSubmit }) => {
   const { push } = useRouter();
   const { toast } = useToast();
 
-  const { handleSubmit, getValues, setValue } = useCustomForm({
+  const { getValues, handleSubmit, setValue } = useCustomForm({
     schema: signUpSchema,
   });
 
@@ -56,13 +57,13 @@ export const SignUp: FC<SignUpProps> = ({ onSubmit }) => {
 
     if (nextStep === Object.keys(signUpFormSteps).length) {
       handleSubmit(async (data) => {
-        const { status, body } = await onSubmit(data);
+        const { body, status } = await onSubmit(data);
 
         if (status === STATUS_CODES.SUCCESS) return push(Routes.HOME);
 
         toast({
-          title: `Oops you got error. ${body.name} ${status}`,
           description: body.message,
+          title: `Oops you got error. ${body.name} ${status}`,
         });
         return;
       })();

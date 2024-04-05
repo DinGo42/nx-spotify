@@ -1,42 +1,37 @@
 import { z } from "zod";
-import { STATUS_CODES, loginSchema, signUpSchema } from "../constants";
+
 import { ForbiddenErrorSchema, NotFoundErrorSchema, UnauthorizedErrorSchema } from "../../utils";
+import { STATUS_CODES } from "../constants";
+import { loginSchema, signUpSchema } from "../schemas";
 import { ContractInstance } from "./type";
 
 export const authContract = (c: ContractInstance) =>
   c.router(
     {
-      createUser: {
-        method: "POST",
-        path: "/signup",
-        responses: {
-          [STATUS_CODES.SUCCESS]: z.null(),
-          [STATUS_CODES.FORBIDDEN]: ForbiddenErrorSchema,
-        },
-        body: signUpSchema,
-      },
-      loginUser: {
+      login: {
+        body: loginSchema,
         method: "POST",
         path: "/login",
         responses: {
-          [STATUS_CODES.SUCCESS]: z.null(),
           [STATUS_CODES.NOT_FOUND]: NotFoundErrorSchema,
+          [STATUS_CODES.SUCCESS]: z.null(),
           [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
         },
-        body: loginSchema,
       },
-      logoutUser: {
+      logout: {
         method: "GET",
         path: `/logout`,
         responses: {
           [STATUS_CODES.SUCCESS]: z.null(),
         },
       },
-      authRouteCheck: {
-        method: "GET",
-        path: `/users`,
+      signup: {
+        body: signUpSchema,
+        method: "POST",
+        path: "/signup",
         responses: {
-          [STATUS_CODES.SUCCESS]: z.string(),
+          [STATUS_CODES.FORBIDDEN]: ForbiddenErrorSchema,
+          [STATUS_CODES.SUCCESS]: z.null(),
         },
       },
     },

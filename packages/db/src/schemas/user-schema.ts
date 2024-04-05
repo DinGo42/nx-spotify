@@ -1,12 +1,14 @@
-import z from "zod";
+import { z } from "zod";
 
 export const userSchema = z.object({
-  id: z.string(),
-  nickname: z.string(),
-  email: z.string().email(),
+  avatar: z.string(),
   banned: z.boolean(),
-  password: z.string(),
-  playlists: z.object({ id: z.string() }).array(),
-  listeningHistory: z.object({ id: z.string() }).array(),
   createdAt: z.date(),
+  createdPlaylists: z.object({ id: z.string() }).array(),
+  email: z.string().email(),
+  followedPlaylists: z.object({ id: z.string() }).array(),
+  id: z.string(),
+  listeningHistory: z.object({ id: z.string() }).array(),
+  nickname: z.string(),
+  password: z.string(),
 });

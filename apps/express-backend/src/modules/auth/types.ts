@@ -1,3 +1,3 @@
-import { UserApiContract } from "@shared/api";
+import { userApiContract } from "@shared/api";
 
-export type AuthContract = UserApiContract["auth"];
+export type AuthContract = typeof userApiContract.auth;

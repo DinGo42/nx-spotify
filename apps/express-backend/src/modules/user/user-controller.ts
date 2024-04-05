@@ -1,38 +1,100 @@
-import { STATUS_CODES } from "@shared/api";
-import { AppRoute } from "@ts-rest/core";
-import { AppRouteOptions } from "@ts-rest/express";
-import { decodeToken, deleteTokens } from "../token";
+import { addToS3, deleteFromS3, getLinkFromS3 } from "@db/s3";
+import { ContractRouteHandler, STATUS_CODES } from "@shared/api";
+
+import { createCryptoKey, getDecodedAccessToken } from "../../utils";
+import { createListeningHistoryService } from "../listening-history";
+import { Prisma } from "../prisma";
+import { deleteTokens } from "../token";
 import { UserContract } from "./types";
 import { deleteAccountService, getSelfService, updateAccountService } from "./user-service";
 
-type Router<TRoute extends AppRoute> = AppRouteOptions<TRoute>;
-type RouteHandler<TRoute extends AppRoute> = Router<TRoute>["handler"];
+export const getSelfController: ContractRouteHandler<UserContract["getSelf"]> = async ({ req }) => {
+  const id = getDecodedAccessToken(req);
+  const user = await getSelfService({
+    include: {
+      createdPlaylists: {
+        select: {
+          id: true,
+        },
+      },
+      followedPlaylists: {
+        select: {
+          id: true,
+        },
+      },
+    },
+    where: {
+      id: id,
+    },
+  });
 
-export const getSelfController: RouteHandler<UserContract["getSelf"]> = async ({ req }) => {
-  const { accessToken } = req.cookies;
-  const user = await getSelfService({ id: decodeToken(accessToken?.split(" ")[1]) ?? "" });
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const avatarUrl = user.avatar && (await getLinkFromS3({ Key: user.avatar }));
 
   return {
+    body: {
+      ...user,
+      avatar: avatarUrl ?? "",
+    },
     status: STATUS_CODES.SUCCESS,
-    body: user,
   };
 };
-export const updateAccountController: RouteHandler<UserContract["updateAccount"]> = async ({ req }) => {
-  const { accessToken } = req.cookies;
-  await updateAccountService({ id: decodeToken(accessToken?.split(" ")[1]) ?? "", ...req.body });
+
+export const updateAccountController: ContractRouteHandler<UserContract["updateAccount"]> = async ({ req }) => {
+  const userId = getDecodedAccessToken(req);
+  const { avatar, followedPlaylists, listeningHistory, ...userData } = req.body;
+
+  listeningHistory &&
+    (await createListeningHistoryService({
+      data: listeningHistory.map(({ id }) => ({ songId: id, userId })),
+    }));
+
+  const cryptoKey = avatar && createCryptoKey();
+
+  if (avatar) {
+    const avatarBuffer = Buffer.from(await avatar.arrayBuffer());
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    await addToS3({ Body: avatarBuffer, ContentType: avatar.type, Key: cryptoKey });
+  }
+
+  const avatarData: Prisma.UserUpdateArgs["data"] = avatar ? { avatar: cryptoKey } : {};
+  const followedPlaylistsData: Prisma.UserUpdateArgs["data"] = followedPlaylists
+    ? {
+        followedPlaylists: {
+          connect: followedPlaylists.map(({ id }) => ({ id })),
+        },
+      }
+    : {};
+
+  await updateAccountService({
+    data: {
+      ...userData,
+      ...avatarData,
+      ...followedPlaylistsData,
+    },
+    where: { id: userId },
+  });
 
   return {
-    status: STATUS_CODES.SUCCESS,
     body: null,
+    status: STATUS_CODES.SUCCESS,
   };
 };
 
-export const deleteAccountController: RouteHandler<UserContract["deleteAccount"]> = async ({ req, res }) => {
-  const { accessToken } = req.cookies;
-  await deleteAccountService({ id: decodeToken(accessToken?.split(" ")[1]) ?? "" });
+export const deleteAccountController: ContractRouteHandler<UserContract["deleteAccount"]> = async ({ req, res }) => {
+  const id = getDecodedAccessToken(req);
+
+  const { avatar } = await deleteAccountService({
+    where: {
+      id,
+    },
+  });
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  avatar && (await deleteFromS3({ Key: avatar }));
   deleteTokens(res);
   return {
-    status: STATUS_CODES.SUCCESS,
     body: null,
+    status: STATUS_CODES.SUCCESS,
   };
 };

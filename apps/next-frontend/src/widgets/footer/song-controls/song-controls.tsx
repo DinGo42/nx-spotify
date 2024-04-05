@@ -11,8 +11,8 @@ export const SongControls: FC = () => {
         <ShuffleIcon className="hover:fill-white-1000 transition-colors" />
         <NextSongIcon className="hover:fill-white-1000 hover:stroke-white-1000  rotate-180 transition-colors" />
         <Button
-          onClick={() => setPaused((prev) => !prev)}
           className="bg-white-1000 flex size-8 items-center justify-center rounded-full transition-transform hover:scale-105"
+          onClick={() => setPaused((prev) => !prev)}
         >
           {paused ? <PauseIcon /> : <PlayIcon className="mb-[1px] ml-1" />}
         </Button>

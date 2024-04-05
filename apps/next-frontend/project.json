@@ -4,13 +4,22 @@
   "sourceRoot": "apps/next-frontend",
   "projectType": "application",
   "targets": {
+    "pm2": {
+      "dependsOn": [
+        {
+          "projects": ["tailwind"],
+          "target": "build"
+        }
+      ],
+      "command": "pm2 startOrReload ./apps/next-frontend/ecosystem.config.js --env production"
+    },
     "build": {
       "executor": "@nx/next:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/next-frontend",
-        "postcssConfig": "apps/next-frontend/postcss.config.ts",
+        "postcssConfig": "apps/next-frontend/postcss.config.js",
         "tsConfig": "apps/next-frontend/tsconfig.spec.json"
       },
       "dependsOn": [
@@ -51,6 +60,19 @@
           "dev": false,
           "port": 3000
         }
+      }
+    },
+    "export": {
+      "executor": "@nx/next:export",
+      "options": {
+        "buildTarget": "next-frontend:build:production"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/next-frontend/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

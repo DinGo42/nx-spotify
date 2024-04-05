@@ -63,6 +63,6 @@ export const api = initClient(userApiContract, {
       .map((key) => key.name + "=" + key.value)
       .join("; "),
   },
-  credentials: "include",
   baseUrl: "http://localhost:3333",
+  credentials: "include",
 });

@@ -5,16 +5,16 @@ const { composePlugins, withNx } = require("@nx/next");
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
+  nx: {
+    svgr: false,
+  },
   async rewrites() {
     return [
       {
-        source: "/admin/:path*",
         destination: "http://localhost:3001/:path*",
+        source: "/admin/:path*",
       },
     ];
-  },
-  nx: {
-    svgr: false,
   },
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((/** @type {{ test: { test: (arg0: string) => any; }; }} */ rule) =>
@@ -24,13 +24,13 @@ const nextConfig = {
     config.module.rules.push(
       {
         ...fileLoaderRule,
-        test: /\.svg$/i,
         resourceQuery: /url/,
+        test: /\.svg$/i,
       },
       {
-        test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
+        test: /\.svg$/i,
         use: ["@svgr/webpack"],
       },
     );

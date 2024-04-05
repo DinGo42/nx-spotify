@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { passwordSchema } from "../user-validation";
 
 export const signUpSchema = z.object({
