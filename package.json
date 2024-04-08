@@ -8,7 +8,8 @@
     "devBack": "pnpm nx serve express-backend",
     "devAdminBack": "pnpm nx serve admin-express-backend",
     "prisma:generate": "pnpx prisma generate --schema=./packages/db/src/prisma/schema.prisma",
-    "prisma:migrateDev": "pnpx prisma migrate dev --schema=./packages/db/src/prisma/schema.prisma"
+    "prisma:migrateDev": "pnpx prisma migrate dev --schema=./packages/db/src/prisma/schema.prisma",
+    "postinstall": "pnpm prisma:generate"
   },
   "private": true,
   "dependencies": {

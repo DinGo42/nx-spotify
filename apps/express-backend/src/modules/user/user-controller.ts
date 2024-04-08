@@ -23,6 +23,7 @@ export const getSelfController: ContractRouteHandler<UserContract["getSelf"]> = 
         },
       },
     },
+
     where: {
       id: id,
     },
