@@ -1,8 +1,8 @@
+import { loginSchema, signUpSchema } from "@db/validation";
 import { z } from "zod";
 
 import { ForbiddenErrorSchema, NotFoundErrorSchema, UnauthorizedErrorSchema } from "../../utils";
 import { STATUS_CODES } from "../constants";
-import { loginSchema, signUpSchema } from "../schemas";
 import { ContractInstance } from "./type";
 
 export const authContract = (c: ContractInstance) =>
