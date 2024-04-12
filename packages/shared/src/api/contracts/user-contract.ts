@@ -14,7 +14,7 @@ export const userContract = (c: ContractInstance) =>
         path: "/delete",
         responses: {
           [STATUS_CODES.NOT_FOUND]: NotFoundErrorSchema,
-          [STATUS_CODES.SUCCESS]: null,
+          [STATUS_CODES.SUCCESS]: z.null(),
           [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
         },
       },
@@ -32,7 +32,7 @@ export const userContract = (c: ContractInstance) =>
       },
       updateAccount: {
         body: updateAccountSchema,
-        method: "POST",
+        method: "PATCH",
         path: "/update",
         responses: {
           [STATUS_CODES.NOT_FOUND]: NotFoundErrorSchema,
