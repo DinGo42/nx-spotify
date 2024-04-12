@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { UnauthorizedErrorSchema } from "../../utils";
 import { STATUS_CODES } from "../constants";
-import { createPlaylistSchema, deletePlaylistSchema, updatePlaylistSchema } from "../schemas";
+import { createPlaylistSchema, updatePlaylistSchema } from "../schemas";
 import { ContractInstance } from "./type";
 
 export const PlaylistContract = (c: ContractInstance) =>
@@ -18,29 +18,47 @@ export const PlaylistContract = (c: ContractInstance) =>
           [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
         },
       },
+
       deletePlaylist: {
-        body: deletePlaylistSchema,
-        method: "POST",
+        body: playListSchema.pick({ id: true }),
+        method: "DELETE",
         path: "/delete",
         responses: {
           [STATUS_CODES.SUCCESS]: z.null(),
           [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
         },
       },
-      getPlaylists: {
+      followPlaylist: {
+        body: playListSchema.pick({ id: true }),
+        method: "POST",
+        path: "/follow-playlist",
+        responses: {
+          [STATUS_CODES.SUCCESS]: z.null(),
+          [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
+        },
+      },
+      getPlaylist: {
         body: playListSchema.pick({
           id: true,
         }),
         method: "POST",
         path: "/get-playlist",
         responses: {
-          [STATUS_CODES.SUCCESS]: playListSchema.array(),
+          [STATUS_CODES.SUCCESS]: playListSchema,
           [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
         },
       },
-      getPlaylistsPreview: {
+      getUserCreatedPlaylists: {
         method: "GET",
-        path: "/get-playlists-preview",
+        path: "/get-user-playlists",
+        responses: {
+          [STATUS_CODES.SUCCESS]: playListSchema.omit({ followers: true, songs: true }).array(),
+          [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
+        },
+      },
+      getUserPlaylistRecommendation: {
+        method: "GET",
+        path: "/get-user-recommendation",
         responses: {
           [STATUS_CODES.SUCCESS]: playListSchema.omit({ followers: true, songs: true }).array(),
           [STATUS_CODES.UNAUTHORIZED]: UnauthorizedErrorSchema,
@@ -48,7 +66,7 @@ export const PlaylistContract = (c: ContractInstance) =>
       },
       updatePlaylist: {
         body: updatePlaylistSchema,
-        method: "POST",
+        method: "PATCH",
         path: "/update",
         responses: {
           [STATUS_CODES.SUCCESS]: z.null(),
