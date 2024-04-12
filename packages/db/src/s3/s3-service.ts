@@ -10,6 +10,8 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+import { createCryptoKey } from "./utils";
+
 const accessKeyId = process.env.BUCKET_ACCESS_KEY;
 const bucketRegion = process.env.BUCKET_REGION;
 const secretAccessKey = process.env.SECRET_ACCESS_BUCKET_KEY;
@@ -22,19 +24,37 @@ const client = new S3Client({
   },
   region: bucketRegion,
 });
-
-export const addToS3 = async (params: Omit<PutObjectCommandInput, "Bucket">) => {
-  const command = new PutObjectCommand({ ...params, Bucket: bucketName });
+export const addToS3 = async ({
+  file,
+  key,
+  ...params
+}: { file: File; key?: string } & Omit<PutObjectCommandInput, "Body" | "Bucket" | "Key">) => {
+  const avatarBuffer = Buffer.from(await file.arrayBuffer());
+  const s3key = key ?? createCryptoKey();
+  const command = new PutObjectCommand({
+    Body: avatarBuffer,
+    ContentType: file.type,
+    Key: s3key,
+    ...params,
+    Bucket: bucketName,
+  });
   await client.send(command);
+  return s3key;
 };
 
-export const getLinkFromS3 = async (params: Omit<GetObjectCommandInput, "Bucket">) => {
-  const command = new GetObjectCommand({ ...params, Bucket: bucketName });
+export const getLinkFromS3 = async ({
+  key,
+  ...params
+}: { key: string } & Omit<GetObjectCommandInput, "Bucket" | "Key">) => {
+  const command = new GetObjectCommand({ Key: key, ...params, Bucket: bucketName });
   await client.send(command);
   return await getSignedUrl(client, command);
 };
 
-export const deleteFromS3 = async (params: Omit<DeleteObjectCommandInput, "Bucket">) => {
-  const command = new DeleteObjectCommand({ ...params, Bucket: bucketName });
+export const deleteFromS3 = async ({
+  key,
+  ...params
+}: { key: string } & Omit<DeleteObjectCommandInput, "Bucket" | "Key">) => {
+  const command = new DeleteObjectCommand({ Key: key, ...params, Bucket: bucketName });
   await client.send(command);
 };
