@@ -4,6 +4,24 @@
   "sourceRoot": "apps/express-backend/src",
   "projectType": "application",
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/express-backend",
+        "main": "apps/express-backend/src/main.ts",
+        "tsConfig": "apps/express-backend/tsconfig.app.json",
+        "isolatedConfig": true,
+        "webpackConfig": "apps/express-backend/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -23,7 +41,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/next-frontend/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/express-backend/**/*.{ts,tsx,js,jsx}"]
       },
       "tags": []
     }
