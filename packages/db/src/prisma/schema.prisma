@@ -8,6 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MusicTypes {
+  JAZZ
+  ROCK
+  HIP_HOP
+  POP
+  DUB_STEP
+}
+
 
 model ListeningHistory {
   id                 String           @id @default(uuid())
@@ -28,7 +36,7 @@ model User {
   banned             Boolean          @default(false)
   createdPlaylists   Playlist[]       @relation("CreatedPlaylists")
   followedPlaylists  Playlist[]
-  listeningHistory   ListeningHistory[]        @relation("UserListeningHistory")
+  listeningHistory   ListeningHistory[]  @relation("UserListeningHistory")
   createdAt          DateTime         @default(now())
 }
 
@@ -61,6 +69,7 @@ model Playlist {
   authorId           String           @unique
   songs              Song[]
   followers          User[]
+  genres               MusicTypes[]
   createdAt          DateTime         @default(now())
 }
 
@@ -70,7 +79,8 @@ model Album {
   description        String
   cover              String[]
   songs              Song[]
-  authors            Creator[] 
+  authors            Creator[]
+  genres               MusicTypes[] 
   createdAt          DateTime         @default(now())
 }
 
@@ -85,5 +95,6 @@ model Song {
   albums             Album[]            
   cover              String
   link               String
+  genres             MusicTypes[]
   createdAt          DateTime         @default(now())
 }
