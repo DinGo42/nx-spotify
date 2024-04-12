@@ -1,9 +1,7 @@
-import { addToS3, deleteFromS3, getLinkFromS3 } from "@db/s3";
 import { ContractRouteHandler, STATUS_CODES } from "@shared/api";
 
-import { createCryptoKey, getDecodedAccessToken } from "../../utils";
-import { createListeningHistoryService } from "../listening-history";
-import { Prisma } from "../prisma";
+import { getDecodedAccessToken } from "../../utils";
+import { addToS3Service, deleteFromS3Service, getLinkFromS3Service } from "../s3";
 import { deleteTokens } from "../token";
 import { UserContract } from "./types";
 import { deleteAccountService, getSelfService, updateAccountService } from "./user-service";
@@ -29,49 +27,33 @@ export const getSelfController: ContractRouteHandler<UserContract["getSelf"]> = 
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const avatarUrl = user.avatar && (await getLinkFromS3({ Key: user.avatar }));
+  const avatarUrl = user.avatar && (await getLinkFromS3Service({ key: user.avatar }));
 
   return {
     body: {
       ...user,
-      avatar: avatarUrl ?? "",
+      avatar: avatarUrl,
     },
     status: STATUS_CODES.SUCCESS,
   };
 };
 
-export const updateAccountController: ContractRouteHandler<UserContract["updateAccount"]> = async ({ req }) => {
+export const updateAccountController: ContractRouteHandler<UserContract["updateAccount"]> = async ({ body, req }) => {
   const userId = getDecodedAccessToken(req);
-  const { avatar, followedPlaylists, listeningHistory, ...userData } = req.body;
+  const { avatar: avatarImage, ...userData } = body;
 
-  listeningHistory &&
-    (await createListeningHistoryService({
-      data: listeningHistory.map(({ id }) => ({ songId: id, userId })),
-    }));
+  // if (listeningHistory) {
+  //   await createListeningHistoryService({
+  //     data: listeningHistory.map(({ id }) => ({ songId: id, userId })),
+  //   });
+  // } //// це винести в інше місце в web sokets де на pause play буде вирішуватися чи додавати чи ні в  listeningHistory
 
-  const cryptoKey = avatar && createCryptoKey();
-
-  if (avatar) {
-    const avatarBuffer = Buffer.from(await avatar.arrayBuffer());
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    await addToS3({ Body: avatarBuffer, ContentType: avatar.type, Key: cryptoKey });
-  }
-
-  const avatarData: Prisma.UserUpdateArgs["data"] = avatar ? { avatar: cryptoKey } : {};
-  const followedPlaylistsData: Prisma.UserUpdateArgs["data"] = followedPlaylists
-    ? {
-        followedPlaylists: {
-          connect: followedPlaylists.map(({ id }) => ({ id })),
-        },
-      }
-    : {};
+  const avatarData = avatarImage ? { avatar: await addToS3Service({ file: avatarImage, userId }) } : {};
 
   await updateAccountService({
     data: {
       ...userData,
       ...avatarData,
-      ...followedPlaylistsData,
     },
     where: { id: userId },
   });
@@ -91,8 +73,7 @@ export const deleteAccountController: ContractRouteHandler<UserContract["deleteA
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  avatar && (await deleteFromS3({ Key: avatar }));
+  avatar && (await deleteFromS3Service({ key: avatar }));
   deleteTokens(res);
   return {
     body: null,
