@@ -7,8 +7,17 @@ export const updateAccountSchema = userSchema
     banned: true,
     createdAt: true,
     createdPlaylists: true,
+    followedPlaylists: true,
     id: true,
+    listeningHistory: true,
   })
   .partial()
-  .and(z.object({ avatar: z.instanceof(File) }))
-  .optional();
+  .merge(
+    z.object({
+      avatar: z.instanceof(File),
+    }),
+  )
+  .partial()
+  .refine((obj) => Object.keys(obj).length > 0, {
+    message: "Object must not be empty",
+  });
