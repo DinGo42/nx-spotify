@@ -1,12 +1,13 @@
 import { ContractRouteHandler, STATUS_CODES } from "@shared/api";
 
 import { getDecodedAccessToken } from "../../utils";
+import { getListeningHistoryService } from "../listening-history";
 import { Prisma } from "../prisma";
 import { updateAccountService } from "../user";
 import {
   createPlaylistService,
   deletePlaylistService,
-  getPlaylistService,
+  getPlaylistsService,
   updatePlaylistService,
 } from "./playlist-service";
 import { PlaylistContract } from "./types";
@@ -44,12 +45,52 @@ export const createPlaylistController: ContractRouteHandler<PlaylistContract["cr
   };
 };
 
-export const getPlaylistsPreviewController: ContractRouteHandler<PlaylistContract["getPlaylistsPreview"]> = async ({
+export const getPlaylist: ContractRouteHandler<PlaylistContract["getPlaylist"]> = async ({ body: { id } }) => {
+  const playlist = await getPlaylistsService({
+    include: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      _count: {
+        select: {
+          followers: true,
+        },
+      },
+      songs: {
+        select: {
+          authors: {
+            select: {
+              id: true,
+              nickname: true,
+            },
+          },
+          cover: true,
+          createdAt: true,
+          id: true,
+          link: true,
+          listeners: true,
+          name: true,
+        },
+      },
+    },
+    where: {
+      id,
+    },
+  });
+  const {
+    _count: { followers },
+    ...playlistData
+  } = playlist[0];
+  return {
+    body: { ...playlistData, followers },
+    status: STATUS_CODES.SUCCESS,
+  };
+};
+
+export const getUserCreatedPlaylists: ContractRouteHandler<PlaylistContract["getUserCreatedPlaylists"]> = async ({
   req,
 }) => {
   const id = getDecodedAccessToken(req);
 
-  const playlists = await getPlaylistService({
+  const playlists = await getPlaylistsService({
     where: {
       author: { id },
     },
@@ -61,34 +102,48 @@ export const getPlaylistsPreviewController: ContractRouteHandler<PlaylistContrac
   };
 };
 
-export const getPlaylistController: ContractRouteHandler<PlaylistContract["getPlaylists"]> = async ({ req }) => {
-  const playlist = await getPlaylistService({
-    include: {
-      followers: {
-        select: {
-          id: true,
-        },
-      },
-      songs: {
-        select: {
-          cover: true,
-          id: true,
-        },
-      },
+export const getUserPlaylistRecommendation: ContractRouteHandler<
+  PlaylistContract["getUserPlaylistRecommendation"]
+> = async ({ req }) => {
+  const id = getDecodedAccessToken(req);
+
+  const oneMonthFromNow = new Date();
+  oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+
+  const monthlyUserSongs = await getListeningHistoryService({
+    select: {
+      songId: true,
     },
     where: {
-      id: req.body.id,
+      createdAt: {
+        gte: new Date(),
+        lte: oneMonthFromNow,
+      },
+      id,
+    },
+  });
+
+  const playlists = await getPlaylistsService({
+    where: {
+      author: { id },
+      songs: {
+        some: {
+          id: {
+            in: monthlyUserSongs.map(({ songId }) => songId),
+          },
+        },
+      },
     },
   });
 
   return {
-    body: playlist,
+    body: playlists,
     status: STATUS_CODES.SUCCESS,
   };
 };
 
 export const updatePlaylistsController: ContractRouteHandler<PlaylistContract["updatePlaylist"]> = async ({ req }) => {
-  const { cover, description, id, name, songs } = req.body;
+  const { id, songs, ...playListData } = req.body;
   const userId = getDecodedAccessToken(req);
 
   const songsData: Prisma.PlaylistUpdateArgs["data"] = songs
@@ -97,13 +152,30 @@ export const updatePlaylistsController: ContractRouteHandler<PlaylistContract["u
 
   await updatePlaylistService({
     data: {
-      cover,
-      description,
-      name,
+      ...playListData,
       ...songsData,
     },
     where: {
       author: { id: userId },
+      id,
+    },
+  });
+
+  return {
+    body: null,
+    status: STATUS_CODES.SUCCESS,
+  };
+};
+
+export const followPlayListController: ContractRouteHandler<PlaylistContract["followPlaylist"]> = async ({ req }) => {
+  const { id } = req.body;
+  const userId = getDecodedAccessToken(req);
+
+  await updatePlaylistService({
+    data: {
+      followers: { connect: { id: userId } },
+    },
+    where: {
       id,
     },
   });

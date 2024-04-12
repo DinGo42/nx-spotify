@@ -4,7 +4,10 @@ import { authMiddleware } from "../../middlewares";
 import {
   createPlaylistController,
   deletePlaylistsController,
-  getPlaylistsController,
+  followPlayListController,
+  getPlaylist,
+  getUserCreatedPlaylists,
+  getUserPlaylistRecommendation,
   updatePlaylistsController,
 } from "./playlist-controller";
 import { PlaylistContract } from "./types";
@@ -12,6 +15,9 @@ import { PlaylistContract } from "./types";
 export const playlistModule: RecursiveRouterObj<PlaylistContract> = {
   createPlaylist: { handler: createPlaylistController, middleware: [authMiddleware] },
   deletePlaylist: { handler: deletePlaylistsController, middleware: [authMiddleware] },
-  getPlaylists: { handler: getPlaylistsController, middleware: [authMiddleware] },
+  followPlaylist: { handler: followPlayListController, middleware: [authMiddleware] },
+  getPlaylist: { handler: getPlaylist, middleware: [authMiddleware] },
+  getUserCreatedPlaylists: { handler: getUserCreatedPlaylists, middleware: [authMiddleware] },
+  getUserPlaylistRecommendation: { handler: getUserPlaylistRecommendation, middleware: [authMiddleware] },
   updatePlaylist: { handler: updatePlaylistsController, middleware: [authMiddleware] },
 };
