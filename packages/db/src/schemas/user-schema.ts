@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const userSchema = z.object({
-  avatar: z.string(),
+  avatar: z.string().nullish(),
   banned: z.boolean(),
   createdAt: z.date(),
   createdPlaylists: z.object({ id: z.string() }).array(),
